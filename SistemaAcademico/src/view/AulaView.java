@@ -2,11 +2,13 @@ package view;
 
 import java.util.Scanner;
 import model.dao.AulaDaoImpl;
+import model.dao.Dao;
 import model.pojo.Aula;
 
 public class AulaView {
 
     private static Scanner scanner = new Scanner (System.in);
+    private static Dao aulaDao = AulaDaoImpl.getInstancia();
 
     public Boolean cadastrar () {
         System.out.println("CADASTRO DE AULAS\nCadastre uma nova aula:\n");
@@ -20,7 +22,7 @@ public class AulaView {
         System.out.println("Local: ");
         String local = scanner.nextLine();
         Aula aula = new Aula (id, diaDaSemana, hora, local);
-        return AulaDaoImpl.getInstancia().inserir(aula);
+        return aulaDao.inserir(aula);
     }
     
     public String validarId () {
@@ -29,7 +31,7 @@ public class AulaView {
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (AulaDaoImpl.getInstancia().indice(id) <= -1)
+            if (aulaDao.indice(id) <= -1)
                 return id;
             else
                 System.out.println("\nUMA AULA COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");

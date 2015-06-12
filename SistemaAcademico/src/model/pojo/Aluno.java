@@ -27,8 +27,7 @@ public class Aluno implements Comparable<Aluno> {
         return turma;
     }
     
-    public Boolean adicionarFalta(Object objeto){
-        Falta falta = (Falta) objeto;
+    public Boolean adicionarFalta(Falta falta){
         if(!this.getFalta().contains(falta))
             return this.getFalta().add(falta);
         return false;

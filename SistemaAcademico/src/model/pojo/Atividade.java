@@ -35,8 +35,7 @@ public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
         this.notasLancadas = notasLancadas;
     }
     
-    public void setTurma(Object obj){
-        Turma turma = (Turma) obj;
+    public void setTurma(Turma turma){
         this.turma = turma;
     }
         
@@ -78,13 +77,13 @@ public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
         return this.getNota().add(nota);
     }
     
-    public Boolean adicionarNotaArquivo(Nota nota){ //Deve carregar as notas do arquivo mesmo se notasLançadas for true
+    /*public Boolean adicionarNotaArquivo(Nota nota){
         for (Nota notaConsultada: this.getNota()) {
             if (notaConsultada.getAluno().equals(nota.getAluno()))
                 return false;
         }
         return this.getNota().add(nota);
-    }
+    }*/
     
     public Nota retornaNota (Aluno aluno) {
         return this.getNota().get(this.getNota().indexOf(nota));

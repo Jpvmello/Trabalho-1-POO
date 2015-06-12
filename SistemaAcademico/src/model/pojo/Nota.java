@@ -34,8 +34,7 @@ public class Nota implements Comparable<Nota>, Comparator<Nota> {
         return aluno;
     }
     
-    public void setAluno(Object obj){
-        Aluno aluno = (Aluno) obj;
+    public void setAluno(Aluno aluno){
         this.aluno = aluno;
     }
     
@@ -43,8 +42,7 @@ public class Nota implements Comparable<Nota>, Comparator<Nota> {
         return atividade;
     }
     
-    public void setAtividade(Object obj){
-        Atividade atividade = (Atividade) obj;
+    public void setAtividade(Atividade atividade){
         this.atividade = atividade;
     }
     

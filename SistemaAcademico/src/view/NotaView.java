@@ -16,12 +16,16 @@ import model.pojo.Turma;
 public class NotaView {
     
     private static Scanner scanner = new Scanner (System.in);
+    private static Dao alunoDao = AlunoDaoImpl.getInstancia();
+    private static Dao atividadeDao = AtividadeDaoImpl.getInstancia();
+    private static Dao notaDao = NotaDaoImpl.getInstancia();
+    private static Dao turmaDao = TurmaDaoImpl.getInstancia();
             
     public Boolean cadastrar () {
         scanner.useLocale(Locale.US);
         System.out.println("CADASTRO DE NOTAS");
         System.out.println("Atividade:");
-        Atividade atividade = (Atividade) this.obterCadastrado(AtividadeDaoImpl.getInstancia());
+        Atividade atividade = (Atividade) this.obterCadastrado(atividadeDao);
         if (atividade == null)
             return false;
         if (!atividade.notasLancadas()) {
@@ -43,7 +47,7 @@ public class NotaView {
                     Nota nota = new Nota (id, valorDaNota, aluno, atividade);
                     aluno.getNota().add(nota);
                     atividade.getNota().add(nota);
-                    NotaDaoImpl.getInstancia().inserir(nota);
+                    notaDao.inserir(nota);
                 }
             }
             atividade.setNotasLancadas(true);
@@ -63,7 +67,7 @@ public class NotaView {
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (NotaDaoImpl.getInstancia().indice(id) <= -1)
+            if (notaDao.indice(id) <= -1)
                 return id;
             else
                 System.out.println("\nUMA NOTA COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");
@@ -89,14 +93,14 @@ public class NotaView {
     public Boolean alterarNotasLancadas () {
         scanner.useLocale(Locale.US);
         System.out.println("Informe o CPF do aluno:");
-        Aluno aluno = (Aluno) AlunoDaoImpl.getInstancia().obter(scanner.nextLine());
+        Aluno aluno = (Aluno) alunoDao.obter(scanner.nextLine());
         if (aluno != null) {
             System.out.println("Informe o ID da turma:");
-            Turma turma = (Turma) TurmaDaoImpl.getInstancia().obter(scanner.nextLine());
+            Turma turma = (Turma) turmaDao.obter(scanner.nextLine());
             if (turma != null) {
                 if (turma.getAluno().contains(aluno)) {
                     System.out.println("Informe o ID da atividade:");
-                    Atividade atividade = (Atividade) AtividadeDaoImpl.getInstancia().obter(scanner.nextLine());
+                    Atividade atividade = (Atividade) atividadeDao.obter(scanner.nextLine());
                     if (atividade != null) {
                         if (atividade.getTurma().equals(turma)) {
                             if (atividade.notasLancadas()) {

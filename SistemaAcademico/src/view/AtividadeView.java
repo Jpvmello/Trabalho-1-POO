@@ -11,12 +11,14 @@ import model.pojo.Turma;
 public class AtividadeView {
     
     private static Scanner scanner = new Scanner (System.in);
+    private static Dao atividadeDao = AtividadeDaoImpl.getInstancia();
+    private static Dao turmaDao = TurmaDaoImpl.getInstancia();
 
     public Boolean cadastrar () {
         scanner.useLocale(Locale.US);
         System.out.println("CADASTRO DE ATIVIDADES");
         System.out.println("Turma:");
-        Turma turma = (Turma) this.obterCadastrado(TurmaDaoImpl.getInstancia());
+        Turma turma = (Turma) this.obterCadastrado(turmaDao);
         if(turma == null)
             return false;
         System.out.println("\nCadastre uma nova atividade:\n");
@@ -34,7 +36,7 @@ public class AtividadeView {
         scanner.nextLine();
         Atividade atividade = new Atividade (id, nome, tipo, data, valor, turma);
         turma.getAtividade().add(atividade);
-        return AtividadeDaoImpl.getInstancia().inserir(atividade);
+        return atividadeDao.inserir(atividade);
     }
     
     public String validarId () {
@@ -43,7 +45,7 @@ public class AtividadeView {
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (AtividadeDaoImpl.getInstancia().indice(id) <= -1)
+            if (atividadeDao.indice(id) <= -1)
                 return id;
             else
                 System.out.println("\nUMA ATIVIDADE COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");

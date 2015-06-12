@@ -1,6 +1,7 @@
 package view;
 
 import java.util.Scanner;
+import model.dao.Dao;
 import model.dao.DisciplinaDaoImpl;
 import model.dao.ProfessorDaoImpl;
 import model.pojo.Disciplina;
@@ -9,6 +10,8 @@ import model.pojo.Professor;
 public class DisciplinaView {
     
     private static Scanner scanner = new Scanner (System.in);
+    private static Dao disciplinaDao = DisciplinaDaoImpl.getInstancia();
+    private static Dao professorDao = ProfessorDaoImpl.getInstancia();
     
     public Boolean cadastrar(){
         System.out.println("CADASTRO DE DISCIPLINAS\nCadastre uma nova disciplina:\n");
@@ -21,7 +24,7 @@ public class DisciplinaView {
         Integer cargaHoraria = scanner.nextInt();
         scanner.nextLine();
         Disciplina disciplina = new Disciplina(nome, ementa, cargaHoraria);
-        return DisciplinaDaoImpl.getInstancia().inserir(disciplina);
+        return disciplinaDao.inserir(disciplina);
     }
     
     public String validarId () {
@@ -30,7 +33,7 @@ public class DisciplinaView {
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (DisciplinaDaoImpl.getInstancia().indice(id) <= -1)
+            if (disciplinaDao.indice(id) <= -1)
                 return id;
             else
                 System.out.println("\nUMA DISCIPLINA COM ESTE NOME JÁ ESTÁ CADASTRADA!"
@@ -41,7 +44,7 @@ public class DisciplinaView {
     
     public Boolean quantidadeTurmas(){
         System.out.println("Informe o nome da disciplina: ");
-        Disciplina disciplina=(Disciplina)DisciplinaDaoImpl.getInstancia().obter(scanner.nextLine());
+        Disciplina disciplina=(Disciplina)disciplinaDao.obter(scanner.nextLine());
         if(disciplina != null){
             System.out.println("A quantidade de turmas da disciplina " + disciplina.getNome() +
                     " já oferecidas é " + disciplina.getTurma().size() + ".");
@@ -52,10 +55,10 @@ public class DisciplinaView {
     
     public Boolean atribuirProfessor () {
         System.out.println("Informe o nome da disciplina: ");
-        Disciplina disciplina = (Disciplina) DisciplinaDaoImpl.getInstancia().obter(scanner.nextLine());
+        Disciplina disciplina = (Disciplina) disciplinaDao.obter(scanner.nextLine());
         if(disciplina != null) {
             System.out.println("Informe o CPF do(a) professor(a) a ser atribuído à disciplina: ");
-            Professor professor = (Professor) ProfessorDaoImpl.getInstancia().obter(scanner.nextLine());
+            Professor professor = (Professor) professorDao.obter(scanner.nextLine());
             if (professor != null)
                 if (professor.adicionarDisciplina(disciplina))
                     return true;

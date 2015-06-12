@@ -22,11 +22,16 @@ import model.pojo.Turma;
 public class TurmaView {    
     
     private static Scanner scanner = new Scanner (System.in);
+    private static Dao alunoDao = AlunoDaoImpl.getInstancia();
+    private static Dao aulaDao = AulaDaoImpl.getInstancia();
+    private static Dao disciplinaDao = DisciplinaDaoImpl.getInstancia();
+    private static Dao professorDao = ProfessorDaoImpl.getInstancia();
+    private static Dao turmaDao = TurmaDaoImpl.getInstancia();
     
     public Boolean cadastrar () {
         System.out.println("CADASTRO DE TURMAS");
         System.out.println("Disciplina (ID: nome):");
-        Disciplina disciplina = (Disciplina) this.obterCadastrado(DisciplinaDaoImpl.getInstancia());
+        Disciplina disciplina = (Disciplina) this.obterCadastrado(disciplinaDao);
         if (disciplina == null)
             return false;
         System.out.println("Professor (ID: CPF):");
@@ -53,19 +58,16 @@ public class TurmaView {
         System.out.println("\nDetermine as aulas a serem adicionadas.");
         System.out.println("(Novas aulas podem ser adicionadas a qualquer momento a partir da opção"
                 + " \"GERENCIAR TURMAS E DISCIPLINAS\" no menu principal)");
-        List<Aula> listaAula = (List<Aula>) this.montarListaDeCadastrados(disciplina,
-                AulaDaoImpl.getInstancia());
+        List<Aula> listaAula = (List<Aula>) this.montarListaDeCadastrados(disciplina, aulaDao);
         
         System.out.println("\nDetermine as alunos (ID: CPF) a serem matriculados.");
         System.out.println("(Novos alunos podem ser matriculados a qualquer momento a partir da opção"
                 + " \"GERENCIAR TURMAS E DISCIPLINAS\" no menu principal)");
-        List<Aluno> listaAluno = (List<Aluno>) this.montarListaDeCadastrados(disciplina,
-                AlunoDaoImpl.getInstancia());
-        Turma turma = new Turma (id, ano, periodo, numeroDeVagas, disciplina, professor, listaAula,
-                listaAluno);
+        List<Aluno> listaAluno = (List<Aluno>) this.montarListaDeCadastrados(disciplina, alunoDao);
+        Turma turma = new Turma (id, ano, periodo, numeroDeVagas, disciplina, professor, listaAula, listaAluno);
         
         disciplina.getTurma().add(turma);
-        return TurmaDaoImpl.getInstancia().inserir(turma);
+        return turmaDao.inserir(turma);
     }
     
     public String validarId () {
@@ -74,7 +76,7 @@ public class TurmaView {
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (TurmaDaoImpl.getInstancia().indice(id) <= -1)
+            if (turmaDao.indice(id) <= -1)
                 return id;
             else
                 System.out.println("\nUMA TURMA COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");
@@ -85,10 +87,10 @@ public class TurmaView {
     public Boolean matricularAluno(){
         System.out.println("MATRÍCULA DE ALUNOS\nMatricule um aluno:\n");
         System.out.println("Informe o CPF do aluno: ");
-        Aluno aluno = (Aluno) AlunoDaoImpl.getInstancia().obter(scanner.nextLine());
+        Aluno aluno = (Aluno) alunoDao.obter(scanner.nextLine());
         if (aluno != null) {
             System.out.println("Informe a turma na qual será efetuada a matrícula: ");
-            Turma turma = (Turma) TurmaDaoImpl.getInstancia().obter(scanner.nextLine());
+            Turma turma = (Turma) turmaDao.obter(scanner.nextLine());
             if(turma != null)
                 if (turma.adicionarAluno(aluno))
                     return true;
@@ -117,7 +119,7 @@ public class TurmaView {
         System.out.println("* Período: ");
         Integer periodo = scanner.nextInt();
         scanner.nextLine();
-        List<Turma> listaTurma = (List<Turma>) TurmaDaoImpl.getInstancia().obterTodos();
+        List<Turma> listaTurma = (List<Turma>) turmaDao.obterTodos();
         if (listaTurma.size() > 0)
             for (Turma turma: listaTurma) {
                 if (turma.getDisciplina().getNome().equals(disciplina))
@@ -138,10 +140,10 @@ public class TurmaView {
     
     public Boolean consultarSituacaoAluno(){
         System.out.println("Informe o CPF do aluno: ");
-        Aluno aluno = (Aluno) AlunoDaoImpl.getInstancia().obter(scanner.nextLine());
+        Aluno aluno = (Aluno) alunoDao.obter(scanner.nextLine());
         if (aluno != null) {
             System.out.println("Informe o nome da disciplina: ");
-            Disciplina disciplina = (Disciplina) DisciplinaDaoImpl.getInstancia().obter(scanner.nextLine());
+            Disciplina disciplina = (Disciplina) disciplinaDao.obter(scanner.nextLine());
             if(disciplina != null){
                 Turma turma = disciplina.turmaQueContem(aluno);
                 if (turma != null) {
@@ -201,7 +203,7 @@ public class TurmaView {
     
     public Professor obterCadastrado (Disciplina disciplina) {
         Professor professor = null;
-        while ((professor = (Professor) this.obterCadastrado(ProfessorDaoImpl.getInstancia())) != null) {
+        while ((professor = (Professor) this.obterCadastrado(professorDao)) != null) {
             if (professor.getDisciplina().contains(disciplina))
                 break;
             else
@@ -242,10 +244,10 @@ public class TurmaView {
     
     public Boolean atribuirAula () {
         System.out.println("Informe o ID da turma: ");
-        Turma turma = (Turma) TurmaDaoImpl.getInstancia().obter(scanner.nextLine());
+        Turma turma = (Turma) turmaDao.obter(scanner.nextLine());
         if(turma != null) {
             System.out.println("Informe o ID da aula a ser atribuída à turma: ");
-            Aula aula = (Aula) AulaDaoImpl.getInstancia().obter(scanner.nextLine());
+            Aula aula = (Aula) aulaDao.obter(scanner.nextLine());
             if (aula != null)
                 if (turma.adicionarAula(aula))
                     return true;

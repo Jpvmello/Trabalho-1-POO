@@ -49,8 +49,7 @@ public class Turma implements Comparable<Turma> {
         return disciplina;
     }
     
-    public void setDisciplina (Object obj) {
-        Disciplina disciplina = (Disciplina) obj;
+    public void setDisciplina (Disciplina disciplina) {
         this.disciplina = disciplina;
     }
     
@@ -58,8 +57,7 @@ public class Turma implements Comparable<Turma> {
         return professor;
     }
     
-    public void setProfessor (Object obj) {
-        Professor professor = (Professor) obj;
+    public void setProfessor (Professor professor) {
         this.professor = professor;
     }
     
@@ -75,8 +73,7 @@ public class Turma implements Comparable<Turma> {
         return atividade;
     }
     
-    public Boolean adicionarAula (Object obj) {
-        Aula aula = (Aula) obj;
+    public Boolean adicionarAula (Aula aula) {
         if (!this.getAula().contains(aula))
             return this.getAula().add(aula);
         return false;

@@ -28,8 +28,7 @@ public class Falta implements Comparable<Falta>, Comparator<Falta> {
         return turma;
     }
     
-    public void setTurma(Object objeto){
-        Turma turma = (Turma) objeto;
+    public void setTurma(Turma turma){
         this.turma = turma;
     }
     

@@ -12,11 +12,13 @@ import model.pojo.Turma;
 public class FaltaView {
 
     private static Scanner scanner = new Scanner (System.in);
+    private static Dao faltaDao = FaltaDaoImpl.getInstancia();
+    private static Dao turmaDao = TurmaDaoImpl.getInstancia();
     
     public Boolean cadastrar () {
         System.out.println("CADASTRO DE FALTAS");
         System.out.println("Turma:");
-        Turma turma = (Turma) this.obterCadastrado(TurmaDaoImpl.getInstancia());
+        Turma turma = (Turma) this.obterCadastrado(turmaDao);
         if (turma == null)
             return false;
         if (!turma.faltasLancadas()) {
@@ -37,7 +39,7 @@ public class FaltaView {
                     scanner.nextLine();
                     Falta falta = new Falta (id, numeroDeFalta, turma);
                     aluno.getFalta().add(falta);
-                    FaltaDaoImpl.getInstancia().inserir(falta);
+                    faltaDao.inserir(falta);
                 }
             }
             return true;
@@ -54,7 +56,7 @@ public class FaltaView {
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (FaltaDaoImpl.getInstancia().indice(id) <= -1)
+            if (faltaDao.indice(id) <= -1)
                 return id;
             else
                 System.out.println("\nUM REGISTRO DE FALTAS COM ESTE ID JÁ ESTÁ CADASTRADO!"
