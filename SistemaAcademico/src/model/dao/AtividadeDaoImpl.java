@@ -1,17 +1,17 @@
 package model.dao;
 
-import java.io.File;
+/*import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.IOException;*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.pojo.Atividade;
 
-public class AtividadeDaoImpl implements Dao {
+public class AtividadeDaoImpl implements Dao<Atividade> {
     
     private static List<Atividade> listaAtividade = new ArrayList<>();
     private static AtividadeDaoImpl instancia = null;
@@ -23,8 +23,7 @@ public class AtividadeDaoImpl implements Dao {
     }
     
     @Override
-    public Boolean inserir (Object objeto) {
-        Atividade atividade = (Atividade) objeto;
+    public Boolean inserir (Atividade atividade) {
         if (this.indice(atividade.getId()) <= -1) {
             listaAtividade.add(atividade);
             Collections.sort(listaAtividade);
@@ -40,18 +39,18 @@ public class AtividadeDaoImpl implements Dao {
     }
     
     @Override
-    public Object obter (String id) {
+    public Atividade obter (String id) {
         if (this.indice(id) >= 0)
             return listaAtividade.get(this.indice(id));
         return null;
     }
     
     @Override
-    public List<? extends Object> obterTodos () {
+    public List<Atividade> obterTodos () {
         return listaAtividade;
     }
     
-    @Override
+    /*@Override
     public void salvar () throws IOException{
         File file = new File ("Atividade.txt");
         if (!(file.exists()))
@@ -101,5 +100,5 @@ public class AtividadeDaoImpl implements Dao {
         }
         br.close();
         fr.close();
-    }
+    }*/
 }

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.pojo.Professor;
-import java.io.File;
+/*import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.IOException;*/
 
-public class ProfessorDaoImpl implements Dao {
+public class ProfessorDaoImpl implements Dao<Professor> {
     private static List<Professor> listaProfessor = new ArrayList<>();
     private static ProfessorDaoImpl instancia = null;
     
@@ -22,8 +22,7 @@ public class ProfessorDaoImpl implements Dao {
     }
     
     @Override
-    public Boolean inserir (Object objeto) {
-        Professor professor = (Professor) objeto;
+    public Boolean inserir (Professor professor) {
         if (this.indice(professor.getCpf()) <= -1) {
             listaProfessor.add(professor);
             Collections.sort(listaProfessor);
@@ -38,18 +37,18 @@ public class ProfessorDaoImpl implements Dao {
     }
     
     @Override
-    public Object obter (String cpf) {
+    public Professor obter (String cpf) {
         if (this.indice(cpf) >= 0)
             return listaProfessor.get(this.indice(cpf));
         return null;
     }
     
     @Override
-    public List<? extends Object> obterTodos () {
+    public List<Professor> obterTodos () {
         return listaProfessor;
     }
     
-    @Override
+    /*@Override
     public void salvar () throws IOException{
         File file = new File("Professor.txt");
         if(!file.exists())
@@ -94,5 +93,5 @@ public class ProfessorDaoImpl implements Dao {
         }
         br.close();
         fr.close();
-    }
+    }*/
 }

@@ -1,13 +1,12 @@
 package model.dao;
 
 import java.util.List;
-import java.io.IOException;
 
-public interface Dao {
-    Boolean inserir (Object objeto);
+public interface Dao<T> {
+    Boolean inserir (T objeto);
     int indice (String id);
-    Object obter (String id);
-    List<? extends Object> obterTodos ();
-    void salvar () throws IOException;
-    void carregar () throws IOException;
+    T obter (String id);
+    List<T> obterTodos ();
+    /*void salvar () throws IOException;
+    void carregar () throws IOException;*/
 }

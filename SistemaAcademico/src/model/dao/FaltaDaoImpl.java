@@ -3,15 +3,15 @@ package model.dao;
 import java.util.Collections;
 import java.util.List;
 import model.pojo.Falta;
-import java.io.File;
+/*import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.IOException;*/
 import java.util.ArrayList;
 
-public class FaltaDaoImpl implements Dao {    
+public class FaltaDaoImpl implements Dao<Falta> {    
     private static List<Falta> listaFalta = new ArrayList<>();
     private static FaltaDaoImpl instancia = null;
     
@@ -22,8 +22,7 @@ public class FaltaDaoImpl implements Dao {
     }
     
     @Override
-    public Boolean inserir (Object objeto) {
-        Falta falta = (Falta) objeto;
+    public Boolean inserir (Falta falta) {
         if (this.indice(falta.getId()) <= -1) {
             listaFalta.add(falta);
             Collections.sort(listaFalta);
@@ -38,18 +37,18 @@ public class FaltaDaoImpl implements Dao {
     }
     
     @Override
-    public Object obter (String id) {
+    public Falta obter (String id) {
         if (this.indice(id) >= 0)
             return listaFalta.get(this.indice(id));
         return null;
     }
     
     @Override
-    public List<? extends Object> obterTodos () {
+    public List<Falta> obterTodos () {
         return listaFalta;
     }
     
-    @Override
+    /*@Override
     public void salvar () throws IOException{
         File file = new File("Falta.txt");
         if(!file.exists())
@@ -84,5 +83,5 @@ public class FaltaDaoImpl implements Dao {
             }
         br.close();
         fr.close();
-    }
+    }*/
 }

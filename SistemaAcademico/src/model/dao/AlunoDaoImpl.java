@@ -3,16 +3,16 @@ package model.dao;
 import java.util.Collections;
 import java.util.List;
 import model.pojo.Aluno;
-import java.io.File;
+/*import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import model.pojo.Turma;*/
 import java.util.ArrayList;
-import model.pojo.Turma;
 
-public class AlunoDaoImpl implements Dao {
+public class AlunoDaoImpl implements Dao<Aluno> {
     
     private static List<Aluno> listaAluno = new ArrayList<>();
     private static AlunoDaoImpl instancia = null;
@@ -24,8 +24,7 @@ public class AlunoDaoImpl implements Dao {
     }
     
     @Override
-    public Boolean inserir (Object objeto) {
-        Aluno aluno = (Aluno) objeto;
+    public Boolean inserir (Aluno aluno) {
         if (this.indice(aluno.getCpf()) <= -1) {
             listaAluno.add(aluno);
             Collections.sort(listaAluno);
@@ -40,18 +39,18 @@ public class AlunoDaoImpl implements Dao {
     }
     
     @Override
-    public Object obter (String cpf) {
+    public Aluno obter (String cpf) {
         if (this.indice(cpf) >= 0)
             return listaAluno.get(this.indice(cpf));
         return null;
     }
     
     @Override
-    public List<? extends Object> obterTodos () {
+    public List<Aluno> obterTodos () {
         return listaAluno;
     }
         
-    @Override
+    /*@Override
     public void salvar () throws IOException{
         File file = new File("Aluno.txt");
         if(!file.exists())
@@ -107,5 +106,5 @@ public class AlunoDaoImpl implements Dao {
         }
         br.close();
         fr.close();
-    }
+    }*/
 }

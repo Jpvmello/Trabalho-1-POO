@@ -3,15 +3,15 @@ package model.dao;
 import java.util.Collections;
 import java.util.List;
 import model.pojo.Turma;
-import java.io.File;
+/*import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.IOException;*/
 import java.util.ArrayList;
 
-public class TurmaDaoImpl implements Dao {
+public class TurmaDaoImpl implements Dao<Turma> {
     private static List<Turma> listaTurma = new ArrayList<Turma>();
     private static TurmaDaoImpl instancia = null;
     
@@ -22,8 +22,7 @@ public class TurmaDaoImpl implements Dao {
     }
     
     @Override
-    public Boolean inserir (Object objeto) {
-        Turma turma = (Turma) objeto;
+    public Boolean inserir (Turma turma) {
         if (this.indice(turma.getId()) <= -1) {
             listaTurma.add(turma);
             Collections.sort(listaTurma);
@@ -39,18 +38,18 @@ public class TurmaDaoImpl implements Dao {
     }
     
     @Override
-    public Object obter (String id) {
+    public Turma obter (String id) {
         if (this.indice(id) >= 0)
             return listaTurma.get(this.indice(id));
         return null;
     }
     
     @Override
-    public List<? extends Object> obterTodos () {
+    public List<Turma> obterTodos () {
         return listaTurma;
     }
     
-    @Override
+    /*@Override
     public void salvar () throws IOException{
         File file = new File("Turma.txt");
         if(!file.exists())
@@ -107,5 +106,5 @@ public class TurmaDaoImpl implements Dao {
         }
         br.close();
         fr.close();
-    }
+    }*/
 }

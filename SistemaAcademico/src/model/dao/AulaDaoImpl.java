@@ -1,17 +1,17 @@
 package model.dao;
 
-import java.io.File;
+/*import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.IOException;*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.pojo.Aula;
 
-public class AulaDaoImpl implements Dao {    
+public class AulaDaoImpl implements Dao<Aula> {    
     private static List<Aula> listaAula = new ArrayList<Aula>();
     private static AulaDaoImpl instancia = null;
     
@@ -22,8 +22,7 @@ public class AulaDaoImpl implements Dao {
     }
     
     @Override
-    public Boolean inserir (Object objeto) {
-        Aula aula = (Aula) objeto;
+    public Boolean inserir (Aula aula) {
         if (this.indice(aula.getId()) <= -1) {
             listaAula.add(aula);
             Collections.sort(listaAula);
@@ -39,18 +38,18 @@ public class AulaDaoImpl implements Dao {
     }
 
     @Override
-    public Object obter(String id) {
+    public Aula obter(String id) {
         if (this.indice(id) >= 0)
             return listaAula.get(this.indice(id));
         return null;
     }
 
     @Override
-    public List<? extends Object> obterTodos() {
+    public List<Aula> obterTodos() {
         return listaAula;
     }
     
-    @Override
+    /*@Override
     public void salvar () throws IOException{
         File file = new File ("Aula.txt");
         if (!(file.exists()))
@@ -85,5 +84,5 @@ public class AulaDaoImpl implements Dao {
         }
         br.close();
         fr.close();
-    }
+    }*/
 }

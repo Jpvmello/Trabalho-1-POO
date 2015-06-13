@@ -1,17 +1,17 @@
 package model.dao;
 
-import java.io.File;
+/*import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.IOException;*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.pojo.Disciplina;
 
-public class DisciplinaDaoImpl implements Dao {
+public class DisciplinaDaoImpl implements Dao<Disciplina> {
     private static List<Disciplina> listaDisciplina = new ArrayList<>();
     private static DisciplinaDaoImpl instancia = null;
     
@@ -22,8 +22,7 @@ public class DisciplinaDaoImpl implements Dao {
     }
     
     @Override
-    public Boolean inserir (Object objeto) {
-        Disciplina disciplina = (Disciplina) objeto;
+    public Boolean inserir (Disciplina disciplina) {
         if (this.indice(disciplina.getNome()) <= -1) {
             listaDisciplina.add(disciplina);
             Collections.sort(listaDisciplina);
@@ -38,18 +37,18 @@ public class DisciplinaDaoImpl implements Dao {
     }
     
     @Override
-    public Object obter (String nome) {
+    public Disciplina obter (String nome) {
         if (this.indice(nome) >= 0)
             return listaDisciplina.get(this.indice(nome));
         return null;
     }
     
     @Override
-    public List<? extends Object> obterTodos () {
+    public List<Disciplina> obterTodos () {
         return listaDisciplina;
     }
     
-    @Override
+    /*@Override
     public void salvar () throws IOException{
         File file = new File ("Disciplina.txt");
         if (!(file.exists()))
@@ -81,5 +80,5 @@ public class DisciplinaDaoImpl implements Dao {
         }
         br.close();
         fr.close();
-    }
+    }*/
 }
