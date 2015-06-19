@@ -2,14 +2,14 @@ package view;
 
 import java.io.IOException;
 import java.util.Scanner;
-import model.dao.AlunoDaoImpl;
+/*import model.dao.AlunoDaoImpl;
 import model.dao.AtividadeDaoImpl;
 import model.dao.AulaDaoImpl;
 import model.dao.DisciplinaDaoImpl;
 import model.dao.FaltaDaoImpl;
 import model.dao.NotaDaoImpl;
 import model.dao.ProfessorDaoImpl;
-import model.dao.TurmaDaoImpl;
+import model.dao.TurmaDaoImpl;*/
 
 public class Main {
     
@@ -22,7 +22,7 @@ public class Main {
     private DisciplinaView disciplinaView = new DisciplinaView();
     private AulaView aulaView = new AulaView();
     
-    private void carregarArquivo() throws IOException{
+    /*private void carregarArquivo() throws IOException{
         DisciplinaDaoImpl.getInstancia().carregar();
         ProfessorDaoImpl.getInstancia().carregar();
         AulaDaoImpl.getInstancia().carregar();
@@ -42,7 +42,7 @@ public class Main {
         AlunoDaoImpl.getInstancia().salvar();
         AtividadeDaoImpl.getInstancia().salvar();
         NotaDaoImpl.getInstancia().salvar();
-    }
+    }*/
     
     private void imprimirMenuCadastro(){
         while (true) {
@@ -194,7 +194,7 @@ public class Main {
         Integer opcao;
         Main main = new Main();
         Scanner entrada = new Scanner(System.in);
-        main.carregarArquivo();
+        //main.carregarArquivo();
         while(true){
             System.out.println("1 - CADASTRAR/LANÇAR");
             System.out.println("2 - CONSULTAR");
@@ -220,12 +220,12 @@ public class Main {
                         break;
                     }
                     case 4:{
-                        main.salvarArquivo();
+                        //main.salvarArquivo();
                         System.out.println("\nINFORMAÇÕES SALVAS!\n");
                         break;
                     }
                     case 5:{
-                        main.salvarArquivo();
+                        //main.salvarArquivo();
                         System.out.println("\nINFORMAÇÕES SALVAS!\nENCERRANDO PROGRAMA.\n");
                         System.exit(0);
                     }

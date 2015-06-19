@@ -1,10 +1,15 @@
 package model.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
+@Entity
+public class Atividade implements Comparable<Atividade>, Comparator<Nota>, Serializable {
+    @Id
     private String id;
     private String nome;
     private String tipo;
@@ -13,7 +18,10 @@ public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
     private Boolean notasLancadas;
     private Turma turma;
     private List<Nota> nota = new ArrayList<>();
-  
+    
+    public Atividade () {
+    }
+    
     public Atividade(String id, String nome, String tipo, String data, Double valor, Turma turma){
         this.id = id;
         this.data = data;
@@ -22,9 +30,6 @@ public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
         this.valor = valor;
         this.notasLancadas = false;
         this.turma = turma;
-    }
-    
-    public Atividade () {
     }
     
     public String getId () {

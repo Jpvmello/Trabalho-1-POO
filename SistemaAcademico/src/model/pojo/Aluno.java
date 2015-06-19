@@ -1,14 +1,22 @@
 package model.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;     
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class Aluno implements Comparable<Aluno> {
+@Entity
+public class Aluno implements Comparable<Aluno>, Serializable {
     private String nome;
+    @Id
     private String cpf;
     private List<Turma> turma = new ArrayList<>();  
     private List<Falta> falta = new ArrayList<>();
     private List<Nota> nota = new ArrayList<>();
+
+    public Aluno() {
+    }
 
     public Aluno (String nome, String cpf) {
         this.nome = nome;

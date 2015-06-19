@@ -1,10 +1,19 @@
 package model.pojo;
 
-public class Aula implements Comparable<Aula> {
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Aula implements Comparable<Aula>, Serializable {
+    @Id
     private String id;
     private String diaDaSemana;
     private String hora;
     private String local;
+
+    public Aula() {
+    }
 
     public Aula (String id, String diaDaSemana, String hora, String local) {
         this.id = id;

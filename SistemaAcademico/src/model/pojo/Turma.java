@@ -1,10 +1,15 @@
 package model.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class Turma implements Comparable<Turma> {
+@Entity
+public class Turma implements Comparable<Turma>, Serializable {
+    @Id
     private String id;
     private Integer ano;
     private Integer periodo;
@@ -14,6 +19,9 @@ public class Turma implements Comparable<Turma> {
     private List<Aula> aula = new ArrayList<>();
     private List<Aluno> aluno = new ArrayList<>();
     private List<Atividade> atividade = new ArrayList<>();
+
+    public Turma() {
+    }
     
     public Turma (String id, Integer ano, Integer periodo, Integer numeroDeVagas,
             Disciplina disciplina, Professor professor, List<Aula> aula, List<Aluno> aluno) {

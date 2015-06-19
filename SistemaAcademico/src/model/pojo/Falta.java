@@ -1,8 +1,13 @@
 package model.pojo;
 
+import java.io.Serializable;
 import java.util.Comparator;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class Falta implements Comparable<Falta>, Comparator<Falta> {
+@Entity
+public class Falta implements Comparable<Falta>, Comparator<Falta>, Serializable {
+    @Id
     private String id;
     private Integer falta;
     private Turma turma;

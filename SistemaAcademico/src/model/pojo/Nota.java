@@ -1,21 +1,26 @@
 package model.pojo;
 
+import java.io.Serializable;
 import java.util.Comparator;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class Nota implements Comparable<Nota>, Comparator<Nota> {
+@Entity
+public class Nota implements Comparable<Nota>, Comparator<Nota>, Serializable {    
+    @Id
     private String id;
     private Double nota;
     private Aluno aluno;
     private Atividade atividade;
-
+ 
+    public Nota() {
+    }
+    
     public Nota (String id, Double nota, Aluno aluno, Atividade atividade){
         this.id = id;
         this.nota = nota;
         this.aluno = aluno;
         this.atividade = atividade;
-    }
-
-    public Nota() {
     }
     
     public String getId (){

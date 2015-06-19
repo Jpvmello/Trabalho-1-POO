@@ -215,8 +215,8 @@ public class TurmaView {
     
     public List<? extends Object> montarListaDeCadastrados (Disciplina disciplina, Dao dao) {
         List<Object> listaObjeto = new ArrayList<>();
-        Boolean possivelAdicionar = true;
         while (true) {
+            Boolean possivelAdicionar = true;
             System.out.println("\nContinuar? ");
             System.out.println("Digite \"sim\" para continuar ou qualquer outro para não: ");
             if (scanner.nextLine().equals("sim")) {
