@@ -54,6 +54,7 @@ public class AtividadeDaoImpl implements Dao<Atividade> {
         return listaAtividade;
     }
     
+    @Override
     public void persist(Atividade object) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
         EntityManager em = emf.createEntityManager();

@@ -52,6 +52,7 @@ public class ProfessorDaoImpl implements Dao<Professor> {
         return listaProfessor;
     }
     
+    @Override
     public void persist(Professor object) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
         EntityManager em = emf.createEntityManager();

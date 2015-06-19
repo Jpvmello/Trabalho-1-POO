@@ -52,6 +52,7 @@ public class FaltaDaoImpl implements Dao<Falta> {
         return listaFalta;
     }
     
+    @Override
     public void persist(Falta object) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
         EntityManager em = emf.createEntityManager();

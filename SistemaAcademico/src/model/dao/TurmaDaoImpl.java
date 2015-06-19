@@ -53,6 +53,7 @@ public class TurmaDaoImpl implements Dao<Turma> {
         return listaTurma;
     }
     
+    @Override
     public void persist(Turma object) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
         EntityManager em = emf.createEntityManager();

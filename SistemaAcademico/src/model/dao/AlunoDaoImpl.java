@@ -54,6 +54,7 @@ public class AlunoDaoImpl implements Dao<Aluno> {
         return listaAluno;
     }
     
+    @Override
     public void persist(Aluno object) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
         EntityManager em = emf.createEntityManager();

@@ -52,6 +52,7 @@ public class NotaDaoImpl implements Dao<Nota> {
         return listaNota;
     }
     
+    @Override
     public void persist(Nota object) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
         EntityManager em = emf.createEntityManager();
