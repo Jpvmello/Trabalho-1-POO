@@ -3,6 +3,10 @@ package model.dao;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import model.pojo.Atividade;
 import model.pojo.Professor;
 /*import java.io.File;
 import java.io.FileWriter;
@@ -46,6 +50,21 @@ public class ProfessorDaoImpl implements Dao<Professor> {
     @Override
     public List<Professor> obterTodos () {
         return listaProfessor;
+    }
+    
+    public void persist(Professor object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
     
     /*@Override

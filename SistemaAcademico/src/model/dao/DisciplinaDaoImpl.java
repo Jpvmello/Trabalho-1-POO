@@ -9,6 +9,10 @@ import java.io.IOException;*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import model.pojo.Atividade;
 import model.pojo.Disciplina;
 
 public class DisciplinaDaoImpl implements Dao<Disciplina> {
@@ -46,6 +50,21 @@ public class DisciplinaDaoImpl implements Dao<Disciplina> {
     @Override
     public List<Disciplina> obterTodos () {
         return listaDisciplina;
+    }
+    
+    public void persist(Disciplina object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
     
     /*@Override

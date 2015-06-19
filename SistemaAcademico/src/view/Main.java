@@ -2,7 +2,14 @@ package view;
 
 import java.io.IOException;
 import java.util.Scanner;
-/*import model.dao.AlunoDaoImpl;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import model.pojo.Aula;
+import model.dao.AulaDaoImpl;
+import model.dao.Dao;
+/*
 import model.dao.AtividadeDaoImpl;
 import model.dao.AulaDaoImpl;
 import model.dao.DisciplinaDaoImpl;
@@ -185,8 +192,7 @@ public class Main {
             if (opcao < 1 || opcao > 4)
                 break;
             if (!consultaEfetuada)
-                System.out.println("\nNÃO FORAM ENCONTRADOS RESULTADOS PARA ESTA CONSULTA!\n");
-        
+                System.out.println("\nNÃO FORAM ENCONTRADOS RESULTADOS PARA ESTA CONSULTA!\n");    
         }
     }
         
@@ -194,6 +200,10 @@ public class Main {
         Integer opcao;
         Main main = new Main();
         Scanner entrada = new Scanner(System.in);
+        
+        Dao aulaDao = AulaDaoImpl.getInstancia();
+        aulaDao.persist(new Aula ("iuhiasd", "asd", "dsiauho", "siaudh"));
+        
         //main.carregarArquivo();
         while(true){
             System.out.println("1 - CADASTRAR/LANÇAR");

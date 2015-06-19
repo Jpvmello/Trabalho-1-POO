@@ -1,15 +1,25 @@
 package model.pojo;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Aula")
 public class Aula implements Comparable<Aula>, Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private String id;
+    @Column (name = "dia da semana")
     private String diaDaSemana;
+    @Column
     private String hora;
+    @Column
     private String local;
 
     public Aula() {

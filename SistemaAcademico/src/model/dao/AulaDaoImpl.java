@@ -9,6 +9,9 @@ import java.io.IOException;*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import model.pojo.Aula;
 
 public class AulaDaoImpl implements Dao<Aula> {    
@@ -47,6 +50,21 @@ public class AulaDaoImpl implements Dao<Aula> {
     @Override
     public List<Aula> obterTodos() {
         return listaAula;
+    }
+    
+    public void persist(Aula object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
     
     /*@Override

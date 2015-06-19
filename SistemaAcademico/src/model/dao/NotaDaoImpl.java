@@ -9,6 +9,10 @@ import java.io.IOException;*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import model.pojo.Atividade;
 import model.pojo.Nota;
 
 public class NotaDaoImpl implements Dao<Nota> {
@@ -46,6 +50,21 @@ public class NotaDaoImpl implements Dao<Nota> {
     @Override
     public List<Nota> obterTodos () {
         return listaNota;
+    }
+    
+    public void persist(Nota object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
     
     /*@Override

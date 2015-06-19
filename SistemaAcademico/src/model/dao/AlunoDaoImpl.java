@@ -11,6 +11,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import model.pojo.Turma;*/
 import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import model.pojo.Aula;
 
 public class AlunoDaoImpl implements Dao<Aluno> {
     
@@ -49,7 +53,23 @@ public class AlunoDaoImpl implements Dao<Aluno> {
     public List<Aluno> obterTodos () {
         return listaAluno;
     }
-        
+    
+    public void persist(Aluno object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+    }
+    
+    
     /*@Override
     public void salvar () throws IOException{
         File file = new File("Aluno.txt");
