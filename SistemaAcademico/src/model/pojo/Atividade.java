@@ -5,34 +5,47 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 
-public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
-    private String id;
+@Entity
+public class Atividade implements Serializable, Comparable<Atividade>, Comparator<Nota> {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String id1;
     private String nome;
     private String tipo;
     private String data;
     private Double valor;
     private Boolean notasLancadas;
+    @ManyToOne
+    @JoinColumn(name="idTurma")
     private Turma turma;
+    @OneToMany(mappedBy="atividade")
     private List<Nota> nota = new ArrayList<>();
     
     public Atividade () {
     }
     
-    public Atividade(String id, String nome, String tipo, String data, Double valor, Turma turma){
-        this.id = id;
+    public Atividade(String id1, String nome, String tipo, String data, Double valor, Turma turma){
+        this.id1 = id1;
         this.data = data;
         this.nome = nome;
         this.tipo = tipo;
         this.valor = valor;
-        this.notasLancadas = false;
+        //this.notasLancadas = false;
         this.turma = turma;
     }
     
     public String getId () {
-        return id;
+        return id1;
     }
     
     public void setNotasLancadas(Boolean notasLancadas){
@@ -74,8 +87,8 @@ public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
     public Boolean adicionarNota(Nota nota){
         if (this.notasLancadas())
             return false;
-        for (Nota notaConsultada: this.getNota()) {
-            if (notaConsultada.getAluno().equals(nota.getAluno()))
+       for (Nota notaConsultada: this.getNota()) {
+           if (notaConsultada.getAluno().equals(nota.getAluno()))
                 return false;
         }
         return this.getNota().add(nota);

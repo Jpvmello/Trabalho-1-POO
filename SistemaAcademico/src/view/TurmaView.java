@@ -125,7 +125,7 @@ public class TurmaView {
                 if (turma.getDisciplina().getNome().equals(disciplina))
                     if (turma.getAno().equals(ano))
                         if (turma.getPeriodo().equals(periodo)) {
-                            System.out.println("\nTURMA " + turma.getId() + ":");
+                            System.out.println("\nTURMA " + turma.getId1() + ":");
                             if (turma.todasAsNotasLancadas() && turma.faltasLancadas())
                                 for (Aluno aluno: turma.getAluno())
                                     this.imprimirSituacaoAluno(aluno, turma);

@@ -51,8 +51,18 @@ public class DisciplinaDaoImpl implements Dao<Disciplina> {
     public List<Disciplina> obterTodos () {
         return listaDisciplina;
     }
-    
-
+   @Override 
+  public void persist(EntityManager em, Disciplina object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
     
     /*@Override
     public void salvar () throws IOException{

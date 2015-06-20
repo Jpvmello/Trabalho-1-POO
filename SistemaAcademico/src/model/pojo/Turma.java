@@ -4,28 +4,57 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+//import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+//import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+//import org.hibernate.annotations.Cascade;
 
-
-public class Turma implements Comparable<Turma> {
-    
-    private String id;
+@Entity
+public class Turma implements Serializable, Comparable<Turma> {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String id1;
     private Integer ano;
     private Integer periodo;
+    private String local;
+    private String horario;
     private Integer numeroDeVagas;
+    @ManyToOne
+    @JoinColumn(name="nomeDisciplina")
     private Disciplina disciplina;
+    @OneToOne
+    @JoinColumn(name="cpfProfessor")
     private Professor professor;
+    @ManyToMany
+//    @JoinTable(name="AulaTurma", inverseJoinColumns={@JoinColumn(name="IdAula")},
+//            joinColumns={@JoinColumn(name="idTurma")})   
+//(mappedBy="turma",targetEntity = Aula.class, fetch = FetchType.LAZY)
     private List<Aula> aula = new ArrayList<>();
+    @ManyToMany
+//    @JoinTable(name="AlunoTurma", inverseJoinColumns={@JoinColumn(name="cpfAluno")},
+//            joinColumns={@JoinColumn(name="idTurma")})
     private List<Aluno> aluno = new ArrayList<>();
+    @OneToMany(mappedBy="turma")
     private List<Atividade> atividade = new ArrayList<>();
+    
 
     public Turma() {
     }
     
-    public Turma (String id, Integer ano, Integer periodo, Integer numeroDeVagas,
+    public Turma (String id1, Integer ano, Integer periodo, Integer numeroDeVagas,
             Disciplina disciplina, Professor professor, List<Aula> aula, List<Aluno> aluno) {
-        this.id = id;
+        this.id1 = id1;
         this.ano = ano;
         this.periodo = periodo;
         this.numeroDeVagas = numeroDeVagas;
@@ -37,8 +66,8 @@ public class Turma implements Comparable<Turma> {
             this.aluno = aluno;
     }
     
-    public String getId () {
-        return id;
+    public String getId1 () {
+        return id1;
     }
     
     public Integer getAno () {
@@ -99,7 +128,7 @@ public class Turma implements Comparable<Turma> {
     
     public Boolean todasAsNotasLancadas () {
         for (Atividade atividade: this.getAtividade()) {
-            if (!atividade.notasLancadas())
+           if (!atividade.notasLancadas())
                 return false;
         }
         return true;
@@ -110,7 +139,7 @@ public class Turma implements Comparable<Turma> {
                 this.getDisciplina().turmaQueContem(aluno) == null) {
             aluno.getTurma().add(this);
             return this.getAluno().add(aluno);
-        }
+       }
         return false;
     }
     

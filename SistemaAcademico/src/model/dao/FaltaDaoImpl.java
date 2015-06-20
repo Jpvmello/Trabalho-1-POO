@@ -51,7 +51,18 @@ public class FaltaDaoImpl implements Dao<Falta> {
     public List<Falta> obterTodos () {
         return listaFalta;
     }
-    
+    @Override
+      public void persist(EntityManager em, Falta object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
  
     
     /*@Override

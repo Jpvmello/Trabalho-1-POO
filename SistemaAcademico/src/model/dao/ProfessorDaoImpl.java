@@ -51,7 +51,18 @@ public class ProfessorDaoImpl implements Dao<Professor> {
     public List<Professor> obterTodos () {
         return listaProfessor;
     }
-    
+    @Override
+      public void persist(EntityManager em, Professor object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
    
     
     /*@Override

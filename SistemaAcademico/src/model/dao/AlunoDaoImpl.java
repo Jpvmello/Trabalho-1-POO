@@ -54,6 +54,18 @@ public class AlunoDaoImpl implements Dao<Aluno> {
         return listaAluno;
     }
     
+      public void persist(EntityManager em, Aluno object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
+}
    
     
     
@@ -114,4 +126,4 @@ public class AlunoDaoImpl implements Dao<Aluno> {
         br.close();
         fr.close();
     }*/
-}
+//}

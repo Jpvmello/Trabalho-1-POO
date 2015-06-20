@@ -58,7 +58,8 @@ public class Aula implements Serializable, Comparable<Aula> {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    
        
     @Override
     public int compareTo (Aula aula) {

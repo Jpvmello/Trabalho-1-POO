@@ -27,7 +27,7 @@ public class NotaDaoImpl implements Dao<Nota> {
     
     @Override
     public Boolean inserir (Nota nota) {
-        if (this.indice(nota.getId()) <= -1) {
+        if (this.indice(nota.getId1()) <= -1) {
             listaNota.add(nota);
             Collections.sort(listaNota);
             return true;
@@ -51,8 +51,18 @@ public class NotaDaoImpl implements Dao<Nota> {
     public List<Nota> obterTodos () {
         return listaNota;
     }
-    
-    
+    @Override
+      public void persist(EntityManager em, Nota object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
     
     /*@Override
     public void salvar () throws IOException{

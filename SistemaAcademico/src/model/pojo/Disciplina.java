@@ -1,18 +1,32 @@
 package model.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
-
-public class Disciplina implements Comparable<Disciplina>{
-    
+@Entity
+public class Disciplina implements Serializable,  Comparable<Disciplina> {
+    private static final long serialVersionUID = 1L;
+    @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String nome;
     private String ementa;
     private Integer cargaHoraria;
+    @ManyToMany
+//    @JoinTable(name="DisciplinaProfessor", inverseJoinColumns={@JoinColumn(name="cpfProfessor")},
+//            joinColumns={@JoinColumn(name="nomeDisciplina")})
     private List<Professor> professor = new ArrayList<>();
+    @OneToMany(mappedBy="disciplina")
     private List<Turma> turma = new ArrayList<>();
-
     public Disciplina() {
     }
     

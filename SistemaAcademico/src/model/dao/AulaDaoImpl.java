@@ -51,7 +51,18 @@ public class AulaDaoImpl implements Dao<Aula> {
     public List<Aula> obterTodos() {
         return listaAula;
     }
-   
+      @Override
+      public void persist(EntityManager em, Aula object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
      
     /*@Override
     public void salvar () throws IOException{

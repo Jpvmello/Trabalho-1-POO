@@ -53,7 +53,18 @@ public class AtividadeDaoImpl implements Dao<Atividade> {
     public List<Atividade> obterTodos () {
         return listaAtividade;
     }
-    
+    @Override  
+    public void persist(EntityManager em, Atividade object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
 
     
     

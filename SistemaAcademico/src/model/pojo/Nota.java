@@ -3,27 +3,49 @@ package model.pojo;
 import java.io.Serializable;
 import java.util.Comparator;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-public class Nota implements Comparable<Nota>, Comparator<Nota> {    
-   
-    private String id;
+
+@Entity
+public class Nota implements Serializable, Comparable<Nota>, Comparator<Nota> {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String id1;
     private Double nota;
+    @ManyToOne
+    @JoinColumn(name="cpfAluno")
     private Aluno aluno;
+    @ManyToOne
+    @JoinColumn(name="idAtividade")
     private Atividade atividade;
  
     public Nota() {
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     
     public Nota (String id, Double nota, Aluno aluno, Atividade atividade){
-        this.id = id;
+        this.id1 = id;
         this.nota = nota;
         this.aluno = aluno;
         this.atividade = atividade;
     }
     
-    public String getId (){
-        return id;
+    public String getId1 (){
+        return id1;
     }
     
     public Double getNota(){
@@ -62,7 +84,7 @@ public class Nota implements Comparable<Nota>, Comparator<Nota> {
     
     @Override
     public String toString () {
-        return ("ID: " + this.id + "\nNotas: " + this.nota + "\nAluno: " 
+        return ("ID: " + this.id1 + "\nNotas: " + this.nota + "\nAluno: " 
                 + this.aluno.getNome() + "\nAtividade: " + atividade.getNome() 
                 + "("+atividade.getTipo()+")" + "\n");
     }    

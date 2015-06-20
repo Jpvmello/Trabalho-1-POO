@@ -3,16 +3,26 @@ package model.pojo;
 import java.io.Serializable;
 import java.util.Comparator;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
-
-public class Falta implements Comparable<Falta>, Comparator<Falta>{
-    private String id;
+@Entity
+public class Falta implements Serializable, Comparable<Falta>, Comparator<Falta> {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String id1;
     private Integer falta;
+    @OneToOne
+    @JoinColumn(name="idTurma")
     private Turma turma;
 
-    public Falta (String id, Integer falta, Turma turma){
-        this.id = id;
+    public Falta (String id1, Integer falta, Turma turma){
+        this.id1 = id1;
         this.falta = falta;
         this.turma = turma;
     }
@@ -21,7 +31,7 @@ public class Falta implements Comparable<Falta>, Comparator<Falta>{
     }
     
     public String getId(){
-        return id;
+        return id1;
     }
     
     public Integer getFalta(){

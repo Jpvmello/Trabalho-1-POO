@@ -27,7 +27,7 @@ public class TurmaDaoImpl implements Dao<Turma> {
     
     @Override
     public Boolean inserir (Turma turma) {
-        if (this.indice(turma.getId()) <= -1) {
+        if (this.indice(turma.getId1()) <= -1) {
             listaTurma.add(turma);
             Collections.sort(listaTurma);
             return true;
@@ -53,7 +53,18 @@ public class TurmaDaoImpl implements Dao<Turma> {
         return listaTurma;
     }
     
-   
+    @Override
+     public void persist(EntityManager em, Turma object) {
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
     
     /*@Override
     public void salvar () throws IOException{
