@@ -201,8 +201,8 @@ public class Main {
         Main main = new Main();
         Scanner entrada = new Scanner(System.in);
         
-        Dao aulaDao = AulaDaoImpl.getInstancia();
-        aulaDao.persist(new Aula ("iuhiasd", "asd", "dsiauho", "siaudh"));
+        //Dao aulaDao = AulaDaoImpl.getInstancia();
+        main.persist(new Aula ("iuhiasd", "asd", "dsiauho", "siaudh"));
         
         //main.carregarArquivo();
         while(true){
@@ -244,5 +244,19 @@ public class Main {
                     }
             }
         }    
+    }
+    public void persist(Aula object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 }

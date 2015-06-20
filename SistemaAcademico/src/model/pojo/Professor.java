@@ -6,10 +6,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
-public class Professor implements Comparable<Professor>, Serializable{
+
+public class Professor implements Comparable<Professor>{
     private String nome;
-    @Id
     private String cpf;
     private String departamento;
     private List<Disciplina> disciplina = new ArrayList<>();

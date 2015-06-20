@@ -52,21 +52,7 @@ public class DisciplinaDaoImpl implements Dao<Disciplina> {
         return listaDisciplina;
     }
     
-    @Override
-    public void persist(Disciplina object) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        try {
-            em.persist(object);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
-            emf.close();
-        }
-    }
+
     
     /*@Override
     public void salvar () throws IOException{

@@ -7,9 +7,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
-public class Turma implements Comparable<Turma>, Serializable {
-    @Id
+
+public class Turma implements Comparable<Turma> {
+    
     private String id;
     private Integer ano;
     private Integer periodo;

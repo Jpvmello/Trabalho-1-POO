@@ -1,15 +1,12 @@
 package model.pojo;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
-@Entity
-public class Disciplina implements Comparable<Disciplina>, Serializable{
-    @Id
+
+public class Disciplina implements Comparable<Disciplina>{
+    
     private String nome;
     private String ementa;
     private Integer cargaHoraria;

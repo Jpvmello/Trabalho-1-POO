@@ -7,7 +7,7 @@ public interface Dao<T> {
     int indice (String id);
     T obter (String id);
     List<T> obterTodos ();
-    void persist (T objeto); 
+   
     /*void salvar () throws IOException;
     void carregar () throws IOException;*/
 }

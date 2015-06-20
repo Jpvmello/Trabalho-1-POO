@@ -5,9 +5,8 @@ import java.util.Comparator;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
-public class Nota implements Comparable<Nota>, Comparator<Nota>, Serializable {    
-    @Id
+public class Nota implements Comparable<Nota>, Comparator<Nota> {    
+   
     private String id;
     private Double nota;
     private Aluno aluno;

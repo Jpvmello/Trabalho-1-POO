@@ -26,7 +26,7 @@ public class AulaDaoImpl implements Dao<Aula> {
     
     @Override
     public Boolean inserir (Aula aula) {
-        if (this.indice(aula.getId()) <= -1) {
+        if (this.indice(aula.getId1()) <= -1) {
             listaAula.add(aula);
             Collections.sort(listaAula);
             return true;
@@ -51,23 +51,8 @@ public class AulaDaoImpl implements Dao<Aula> {
     public List<Aula> obterTodos() {
         return listaAula;
     }
-    
-    @Override
-    public void persist(Aula object) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SistemaAcademicoPU");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        try {
-            em.persist(object);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
-            emf.close();
-        }
-    }
-    
+   
+     
     /*@Override
     public void salvar () throws IOException{
         File file = new File ("Aula.txt");

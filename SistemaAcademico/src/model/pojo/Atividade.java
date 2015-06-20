@@ -7,9 +7,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
-public class Atividade implements Comparable<Atividade>, Comparator<Nota>, Serializable {
-    @Id
+
+public class Atividade implements Comparable<Atividade>, Comparator<Nota> {
     private String id;
     private String nome;
     private String tipo;

@@ -5,9 +5,8 @@ import java.util.Comparator;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
-public class Falta implements Comparable<Falta>, Comparator<Falta>, Serializable {
-    @Id
+
+public class Falta implements Comparable<Falta>, Comparator<Falta>{
     private String id;
     private Integer falta;
     private Turma turma;
