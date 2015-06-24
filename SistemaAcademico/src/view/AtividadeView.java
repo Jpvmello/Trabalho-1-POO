@@ -1,5 +1,6 @@
 package view;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
@@ -66,5 +67,13 @@ public class AtividadeView {
                 System.out.println("\nITEM NÃO CADASTRADO! TENTE NOVAMENTE.\n");
         }
         return null;
+    }
+    public void listar(EntityManager em){
+        
+        System.out.println("-------Lista de Atividades Cadastradas-------");
+        List<Atividade> attachedAtividade = atividadeDao.obterTodos(em);
+        for(Atividade atividade : attachedAtividade){
+        atividade.toString();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
 import model.dao.AlunoDaoImpl;
@@ -35,5 +37,14 @@ public class AlunoView {
                         + " TENTE NOVAMENTE!\n");
         }
         return null;
+    }
+    
+    public void listar(EntityManager em){
+        
+        System.out.println("-------Lista de Alunos Cadastrados -------");
+        List<Aluno> attachedAluno = alunoDao.obterTodos(em);
+        for(Aluno aluno : attachedAluno){
+        aluno.toString();
+        }
     }
 }

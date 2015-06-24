@@ -1,6 +1,7 @@
 package view;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
@@ -146,4 +147,14 @@ public class NotaView {
             System.out.println("\nALUNO NÃO ENCONTRADO!");
         return false;
     }
+    
+     public void listar(EntityManager em){
+        
+        System.out.println("-------Lista de Notas Cadastradas-------");
+        List<Nota> attachedNota = notaDao.obterTodos(em);
+        for(Nota nota : attachedNota){
+        nota.toString();
+        }
+    }
+    
 }

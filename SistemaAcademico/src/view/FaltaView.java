@@ -1,6 +1,7 @@
 package view;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
 import model.dao.Dao;
@@ -94,4 +95,14 @@ public class FaltaView {
         }
         return null;
     }
+    
+     public void listar(EntityManager em){
+        
+        System.out.println("-------Lista de Faltas Cadastradas-------");
+        List<Falta> attachedFalta = faltaDao.obterTodos(em);
+        for(Falta falta : attachedFalta){
+        falta.toString();
+        }
+    }
+    
 }
