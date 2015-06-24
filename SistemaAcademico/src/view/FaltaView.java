@@ -101,7 +101,7 @@ public class FaltaView {
         System.out.println("-------Lista de Faltas Cadastradas-------");
         List<Falta> attachedFalta = faltaDao.obterTodos(em);
         for(Falta falta : attachedFalta){
-        falta.toString();
+            falta.toString();
         }
     }
     
