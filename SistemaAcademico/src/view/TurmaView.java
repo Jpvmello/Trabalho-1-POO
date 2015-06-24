@@ -313,4 +313,12 @@ public class TurmaView {
             System.out.println("\nTURMA NÃO ENCONTRADA!");
         return false;
     }
+    public void listar(EntityManager em){
+        
+        System.out.println("-------Lista de Turmas Cadastradas-------");
+        List<Turma> attachedTurma = turmaDao.obterTodos(em);
+        for(Turma turma : attachedTurma){
+        turma.toString();
+        }
+    }
 }
