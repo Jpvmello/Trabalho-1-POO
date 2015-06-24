@@ -66,6 +66,20 @@ public class FaltaView {
         return null;
     }
     
+    public void editar (EntityManager em) throws Exception {
+        System.out.println("Informe o ID do registro de faltas:");
+        Falta falta = (Falta) faltaDao.obter(em, scanner.nextLine());
+        if (falta != null) {
+            System.out.println("\n" + falta.toString());
+            System.out.println("Número de faltas:");
+            falta.setFalta(scanner.nextInt());
+            System.out.println("\nEDIÇÃO EFETUADA!\n");
+            faltaDao.atualizar(em, falta);
+        }
+        else
+            System.out.println("\nREGISTRO DE FALTAS NÃO ENCONTRADO!\n");
+    }
+    
     public Object obterCadastrado (EntityManager em, Dao dao) {    
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");

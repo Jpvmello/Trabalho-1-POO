@@ -74,6 +74,21 @@ public class NotaView {
         return null;
     }
     
+    public void editar (EntityManager em) throws Exception {
+        scanner.useLocale(Locale.US);
+        System.out.println("Informe o ID do registro de nota:");
+        Nota nota = (Nota) notaDao.obter(em, scanner.nextLine());
+        if (nota != null) {
+            System.out.println("\n" + nota.toString());
+            System.out.println("Nota:");
+            nota.setNota(scanner.nextDouble());
+            System.out.println("\nEDIÇÃO EFETUADA!\n");
+            notaDao.atualizar(em, nota);
+        }
+        else
+            System.out.println("\nREGISTRO DE NOTA NÃO ENCONTRADO!\n");
+    }
+    
     public Object obterCadastrado (EntityManager em, Dao dao) {    
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");

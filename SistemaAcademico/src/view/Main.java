@@ -80,12 +80,68 @@ public class Main {
         }
     }
     
+    private void imprimirMenuEdicao(EntityManager em) throws Exception{
+        while (true) {
+            System.out.println("1 - EDITAR ALUNO");
+            System.out.println("2 - EDITAR TURMA");
+            System.out.println("3 - EDITAR PROFESSOR");
+            System.out.println("4 - EDITAR ATIVIDADE");
+            System.out.println("5 - EDITAR DISCIPLINA");
+            System.out.println("6 - EDITAR AULA");
+            System.out.println("7 - EDITAR NOTAS");
+            System.out.println("8 - EDITAR FALTAS");
+            System.out.println("OUTRO - VOLTAR");
+
+            System.out.println("\nOpção: ");
+            Scanner entrada = new Scanner(System.in);
+            Integer opcao = entrada.nextInt();
+            entrada.nextLine();
+            System.out.println("");
+            switch(opcao) {
+                case 1:{
+                    //this.alunoView.editar(em);
+                    break;
+                }
+                case 2:{
+                    this.turmaView.editar(em);
+                    break;
+                }
+                case 3:{
+                    //this.professorView.editar(em);
+                    break;
+                }
+                case 4:{
+                    //this.atividadeView.editar(em);
+                    break;
+                }
+                case 5:{
+                    //this.disciplinaView.editar(em);
+                    break;
+                }
+                case 6:{
+                    //this.aulaView.editar(em);
+                    break;
+                }
+                case 7:{
+                    //this.notaView.editar(em);
+                    break;
+                }
+                case 8:{
+                    //this.faltaView.editar(em);
+                    break;
+                }
+                default:{}
+            }
+            if (opcao < 1 || opcao > 8)
+                break;
+        }
+    }
+    
     private void imprimirMenuGerenciamento(EntityManager em){
         while(true){
             System.out.println("1 - MATRICULAR ALUNO");
             System.out.println("2 - ATRIBUIR PROFESSOR A DISCIPLINA");
             System.out.println("3 - ATRIBUIR AULA A TURMA");
-            System.out.println("4 - ALTERAR NOTAS LANÇADAS");
             System.out.println("OUTRO - VOLTAR");
 
             System.out.println("\nOpção: ");
@@ -107,13 +163,9 @@ public class Main {
                     operacaoEfetuada = this.turmaView.atribuirAula(em);
                     break;
                 }
-                case 4:{
-                    operacaoEfetuada = this.notaView.alterarNotasLancadas(em);
-                    break;
-                }
                 default:{}
             }
-            if (opcao < 1 || opcao > 4)
+            if (opcao < 1 || opcao > 3)
                 break;
             if (operacaoEfetuada)
                 System.out.println("\nCONCLUÍDO COM ÊXITO!\n");
@@ -173,9 +225,11 @@ public class Main {
 
         while(true){
             System.out.println("1 - CADASTRAR/LANÇAR");
-            System.out.println("2 - CONSULTAR");
-            System.out.println("3 - GERENCIAR TURMAS E DISCIPLINAS");
-            System.out.println("4 - SAIR");
+            System.out.println("2 - LISTAR");
+            System.out.println("3 - EDITAR");
+            System.out.println("4 - CONSULTAR");
+            System.out.println("5 - GERENCIAR TURMAS E DISCIPLINAS");
+            System.out.println("6 - SAIR");
             
             System.out.println("\nOpção:");
             opcao = entrada.nextInt();
@@ -187,14 +241,22 @@ public class Main {
                         break;
                     }
                     case 2: {
+                        //main.imprimirMenuListagem(em);
+                        break;
+                    }
+                    case 3: {
+                        main.imprimirMenuEdicao(em);
+                        break;
+                    }
+                    case 4: {
                         main.imprimirMenuConsultar(em);
                         break;
                     }
-                    case 3:{
+                    case 5:{
                         main.imprimirMenuGerenciamento(em);
                         break;
                     }
-                    case 4:{
+                    case 6:{
                         em.close();
                         emf.close();
                         System.exit(0);

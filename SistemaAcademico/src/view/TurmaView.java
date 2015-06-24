@@ -84,6 +84,59 @@ public class TurmaView {
         return null;
     }
     
+    public void editar (EntityManager em) throws Exception {
+        System.out.println("Informe o ID da turma:");
+        Turma turma = (Turma) turmaDao.obter(em, scanner.nextLine());
+        if (turma != null) {
+            while (true) {
+                System.out.println("\n" + turma.toString());
+                Boolean edicaoEfetuada = true;
+                System.out.println("1 - EDITAR ANO");
+                System.out.println("2 - EDITAR PERÍODO");
+                System.out.println("3 - EDITAR NÚMERO DE VAGAS");
+                System.out.println("OUTRO - VOLTAR");
+                System.out.println("\nOpção:");
+                Integer opcao = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("");
+                switch(opcao) {
+                    case 1:{
+                        System.out.println("Ano:");
+                        turma.setAno(scanner.nextInt());
+                        break;
+                    }
+                    case 2:{
+                        System.out.println("Período:");
+                        turma.setPeriodo(scanner.nextInt());
+                        break;
+                    }
+                    case 3:{
+                        System.out.println("Número de vagas:");
+                        Integer numeroDeVagas = scanner.nextInt();
+                        scanner.nextLine();
+                        if (numeroDeVagas >= turma.getAluno().size())
+                            turma.setNumeroDeVagas(numeroDeVagas);
+                        else {
+                            edicaoEfetuada = false;
+                            System.out.println("\nO NÚMERO DE ALUNOS JÁ MATRICULADOS NA TURMA EXCEDE "
+                                    + "O NÚMERO DE VAGAS ESTIPULADO!\n");
+                            System.out.println("\nEDIÇÃO NÃO EFETUADA!\n");
+                        }
+                        break;
+                    }
+                    default:{}
+                }
+                if (opcao < 1 || opcao > 3)
+                    break;
+                if (edicaoEfetuada)
+                    System.out.println("\nEDIÇÃO EFETUADA!\n");
+            }
+            turmaDao.atualizar(em, turma);
+        }
+        else
+            System.out.println("\nTURMA NÃO ENCONTRADA!\n");
+    }
+    
     public Boolean matricularAluno(EntityManager em){
         System.out.println("MATRÍCULA DE ALUNOS\nMatricule um aluno:\n");
         System.out.println("Informe o CPF do aluno: ");
