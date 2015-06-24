@@ -1,17 +1,11 @@
 package model.dao;
 
-/*import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;*/
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import model.pojo.Aluno;
 import model.pojo.Atividade;
 import model.pojo.Nota;
 
@@ -26,89 +20,89 @@ public class NotaDaoImpl implements Dao<Nota> {
     }
     
     @Override
-    public Boolean inserir (Nota nota) {
-        if (this.indice(nota.getId1()) <= -1) {
-            listaNota.add(nota);
-            Collections.sort(listaNota);
-            return true;
-        }
-        return false;
-    }
-    
-    @Override
-    public int indice (String id) {
-        return Collections.binarySearch(listaNota, new Nota (id, null, null, null));
-    }
-    
-    @Override
-    public Nota obter (String id) {
-        if (this.indice(id) >= 0)
-            return listaNota.get(this.indice(id));
-        return null;
-    }
-    
-    @Override
-    public List<Nota> obterTodos () {
-        return listaNota;
-    }
-    @Override
-      public void persist(EntityManager em, Nota object) {
+    public Boolean salvar (EntityManager em, Nota nota) {
         em.getTransaction().begin();
+        Aluno aluno = nota.getAluno();
+        if (aluno != null) {
+            aluno = em.getReference(aluno.getClass(), aluno.getCpf());
+            nota.setAluno(aluno);
+        }
+        Atividade atividade = nota.getAtividade();
+        if (atividade != null) {
+            atividade = em.getReference(atividade.getClass(), atividade.getId());
+            nota.setAtividade(atividade);
+        }
+        em.persist(nota);
+        if (aluno != null) {
+            aluno.getNota().add(nota);
+            aluno = em.merge(aluno);
+        }
+        if (atividade != null) {
+            atividade.getNota().add(nota);
+            atividade = em.merge(atividade);
+        }
+        em.getTransaction().commit();
+        return true;
+    }
+    
+    @Override
+    public Nota obter(EntityManager em, String id) {
+        return em.find(Nota.class, id);
+    }
+
+    @Override
+    public List<Nota> obterTodos (EntityManager em) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Nota.class));
+        Query q = em.createQuery(cq);
+        return q.getResultList();
+    }
+    
+    @Override
+    public Boolean atualizar (EntityManager em, Nota nota) throws Exception {
         try {
-            em.persist(object);
+            em.getTransaction().begin();
+            Nota persistentNota = em.find(Nota.class, nota.getId());
+            Aluno alunoOld = persistentNota.getAluno();
+            Aluno alunoNew = nota.getAluno();
+            Atividade atividadeOld = persistentNota.getAtividade();
+            Atividade atividadeNew = nota.getAtividade();
+            if (alunoNew != null) {
+                alunoNew = em.getReference(alunoNew.getClass(), alunoNew.getCpf());
+                nota.setAluno(alunoNew);
+            }
+            if (atividadeNew != null) {
+                atividadeNew = em.getReference(atividadeNew.getClass(), atividadeNew.getId());
+                nota.setAtividade(atividadeNew);
+            }
+            nota = em.merge(nota);
+            if (alunoOld != null && !alunoOld.equals(alunoNew)) {
+                alunoOld.getNota().remove(nota);
+                alunoOld = em.merge(alunoOld);
+            }
+            if (alunoNew != null && !alunoNew.equals(alunoOld)) {
+                alunoNew.getNota().add(nota);
+                alunoNew = em.merge(alunoNew);
+            }
+            if (atividadeOld != null && !atividadeOld.equals(atividadeNew)) {
+                atividadeOld.getNota().remove(nota);
+                atividadeOld = em.merge(atividadeOld);
+            }
+            if (atividadeNew != null && !atividadeNew.equals(atividadeOld)) {
+                atividadeNew.getNota().add(nota);
+                atividadeNew = em.merge(atividadeNew);
+            }
             em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                String id = nota.getId();
+                if (obter(em, id) == null) {
+                    return false;
+                }
+            }
+            throw ex;
         }
+        return true;
     }
-    
-    /*@Override
-    public void salvar () throws IOException{
-        File file = new File ("Nota.txt");
-        if (!(file.exists()))
-            file.createNewFile();
-        FileWriter fw = new FileWriter (file);
-        BufferedWriter bw = new BufferedWriter (fw);
-        for (Nota nota: this.listaNota){
-            bw.write (nota.getId());
-            bw.newLine ();
-            bw.write (nota.getNota().toString());
-            bw.newLine ();
-            bw.write (nota.getAluno().getCpf());
-            bw.newLine ();
-            if (nota.getAtividade() != null){
-                bw.write (nota.getAtividade().getId());
-                bw.newLine ();
-            }
-        }
-        bw.close();
-        fw.close();
-    }
-    
-  @Override
-    public void carregar () throws IOException{
-        File file = new File ("Nota.txt");
-        FileReader fr = new FileReader (file);
-        BufferedReader br = new BufferedReader (fr);
-        while (br.ready()){
-            String id = br.readLine();
-            Double valor = Double.parseDouble (br.readLine());
-            String aluno = br.readLine();
-            String atividade = br.readLine();
-            Nota nota = new Nota(id, valor, null, null);
-            this.inserir(nota);
-            if (AlunoDaoImpl.getInstancia().obter(aluno) != null){
-                nota.setAluno(AlunoDaoImpl.getInstancia().obter(aluno));
-                nota.getAluno().adicionarNota(nota);
-            }
-            if (AtividadeDaoImpl.getInstancia().obter(atividade) != null){
-                nota.setAtividade(AtividadeDaoImpl.getInstancia().obter(atividade));
-                nota.getAtividade().adicionarNotaArquivo(nota);
-            }
-        }
-        br.close();
-        fr.close();
-    }*/
 }

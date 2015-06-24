@@ -1,6 +1,7 @@
 package view;
 
 import java.util.Scanner;
+import javax.persistence.EntityManager;
 import model.dao.AulaDaoImpl;
 import model.dao.Dao;
 import model.pojo.Aula;
@@ -10,9 +11,9 @@ public class AulaView {
     private static Scanner scanner = new Scanner (System.in);
     private static Dao aulaDao = AulaDaoImpl.getInstancia();
 
-    public Boolean cadastrar () {
+    public Boolean cadastrar (EntityManager em) throws Exception {
         System.out.println("CADASTRO DE AULAS\nCadastre uma nova aula:\n");
-        String id = this.validarId();
+        String id = this.validarId(em);
         if (id == null)
             return false;
         System.out.println("Dia da semana: ");
@@ -22,16 +23,16 @@ public class AulaView {
         System.out.println("Local: ");
         String local = scanner.nextLine();
         Aula aula = new Aula (id, diaDaSemana, hora, local);
-        return aulaDao.inserir(aula);
+        return aulaDao.salvar(em, aula);
     }
     
-    public String validarId () {
+    public String validarId (EntityManager em) {
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (aulaDao.indice(id) <= -1)
+            if (aulaDao.obter(em, id) == null)
                 return id;
             else
                 System.out.println("\nUMA AULA COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");

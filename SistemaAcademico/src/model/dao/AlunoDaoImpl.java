@@ -1,20 +1,13 @@
 package model.dao;
 
-import java.util.Collections;
 import java.util.List;
 import model.pojo.Aluno;
-/*import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-import model.pojo.Turma;*/
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import model.pojo.Aula;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import model.pojo.Nota;
+import model.pojo.Turma;
 
 public class AlunoDaoImpl implements Dao<Aluno> {
     
@@ -28,102 +21,128 @@ public class AlunoDaoImpl implements Dao<Aluno> {
     }
     
     @Override
-    public Boolean inserir (Aluno aluno) {
-        if (this.indice(aluno.getCpf()) <= -1) {
-            listaAluno.add(aluno);
-            Collections.sort(listaAluno);
-            return true;
+    public Boolean salvar (EntityManager em, Aluno aluno) throws Exception {
+        if (aluno.getTurma() == null) {
+            aluno.setTurma(new ArrayList<Turma>());
         }
-        return false;
-    }
-    
-    @Override
-    public int indice (String cpf) {
-        return Collections.binarySearch(listaAluno, new Aluno (null, cpf));
-    }
-    
-    @Override
-    public Aluno obter (String cpf) {
-        if (this.indice(cpf) >= 0)
-            return listaAluno.get(this.indice(cpf));
-        return null;
-    }
-    
-    @Override
-    public List<Aluno> obterTodos () {
-        return listaAluno;
-    }
-    
-      public void persist(EntityManager em, Aluno object) {
-        em.getTransaction().begin();
+        if (aluno.getNota() == null) {
+            aluno.setNota(new ArrayList<Nota>());
+        }
         try {
-            em.persist(object);
+            em.getTransaction().begin();
+            List<Turma> attachedTurma = new ArrayList<Turma>();
+            for (Turma turmaTurmaToAttach : aluno.getTurma()) {
+                turmaTurmaToAttach = em.getReference(turmaTurmaToAttach.getClass(), turmaTurmaToAttach.getId());
+                attachedTurma.add(turmaTurmaToAttach);
+            }
+            aluno.setTurma(attachedTurma);
+            List<Nota> attachedNota = new ArrayList<Nota>();
+            for (Nota notaNotaToAttach : aluno.getNota()) {
+                notaNotaToAttach = em.getReference(notaNotaToAttach.getClass(), notaNotaToAttach.getId());
+                attachedNota.add(notaNotaToAttach);
+            }
+            aluno.setNota(attachedNota);
+            em.persist(aluno);
+            for (Turma turmaTurma : aluno.getTurma()) {
+                turmaTurma.getAluno().add(aluno);
+                turmaTurma = em.merge(turmaTurma);
+            }
+            for (Nota notaNota : aluno.getNota()) {
+                Aluno oldAlunoOfNotaNota = notaNota.getAluno();
+                notaNota.setAluno(aluno);
+                notaNota = em.merge(notaNota);
+                if (oldAlunoOfNotaNota != null) {
+                    oldAlunoOfNotaNota.getNota().remove(notaNota);
+                    oldAlunoOfNotaNota = em.merge(oldAlunoOfNotaNota);
+                }
+            }
             em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
+        } catch (Exception ex) {
+            if (obter(em, aluno.getCpf()) != null) {
+                return false;
+            }
+            throw ex;
         }
+        return true;
+    }
+    
+    @Override
+    public Aluno obter(EntityManager em, String cpf) {
+        return em.find(Aluno.class, cpf);
+    }
+
+    @Override
+    public List<Aluno> obterTodos (EntityManager em) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Aluno.class));
+        Query q = em.createQuery(cq);
+        return q.getResultList();
+    }
+    
+    @Override
+    public Boolean atualizar (EntityManager em, Aluno aluno) throws Exception {
+        try {
+            em.getTransaction().begin();
+            Aluno persistentAluno = em.find(Aluno.class, aluno.getCpf());
+            List<Turma> turmaOld = persistentAluno.getTurma();
+            List<Turma> turmaNew = aluno.getTurma();
+            List<Nota> notaOld = persistentAluno.getNota();
+            List<Nota> notaNew = aluno.getNota();
+            List<Turma> attachedTurmaNew = new ArrayList<Turma>();
+            for (Turma turmaNewTurmaToAttach : turmaNew) {
+                turmaNewTurmaToAttach = em.getReference(turmaNewTurmaToAttach.getClass(), turmaNewTurmaToAttach.getId());
+                attachedTurmaNew.add(turmaNewTurmaToAttach);
+            }
+            turmaNew = attachedTurmaNew;
+            aluno.setTurma(turmaNew);
+            List<Nota> attachedNotaNew = new ArrayList<Nota>();
+            for (Nota notaNewNotaToAttach : notaNew) {
+                notaNewNotaToAttach = em.getReference(notaNewNotaToAttach.getClass(), notaNewNotaToAttach.getId());
+                attachedNotaNew.add(notaNewNotaToAttach);
+            }
+            notaNew = attachedNotaNew;
+            aluno.setNota(notaNew);
+            aluno = em.merge(aluno);
+            for (Turma turmaOldTurma : turmaOld) {
+                if (!turmaNew.contains(turmaOldTurma)) {
+                    turmaOldTurma.getAluno().remove(aluno);
+                    turmaOldTurma = em.merge(turmaOldTurma);
+                }
+            }
+            for (Turma turmaNewTurma : turmaNew) {
+                if (!turmaOld.contains(turmaNewTurma)) {
+                    turmaNewTurma.getAluno().add(aluno);
+                    turmaNewTurma = em.merge(turmaNewTurma);
+                }
+            }
+            for (Nota notaOldNota : notaOld) {
+                if (!notaNew.contains(notaOldNota)) {
+                    notaOldNota.setAluno(null);
+                    notaOldNota = em.merge(notaOldNota);
+                }
+            }
+            for (Nota notaNewNota : notaNew) {
+                if (!notaOld.contains(notaNewNota)) {
+                    Aluno oldAlunoOfNotaNewNota = notaNewNota.getAluno();
+                    notaNewNota.setAluno(aluno);
+                    notaNewNota = em.merge(notaNewNota);
+                    if (oldAlunoOfNotaNewNota != null && !oldAlunoOfNotaNewNota.equals(aluno)) {
+                        oldAlunoOfNotaNewNota.getNota().remove(notaNewNota);
+                        oldAlunoOfNotaNewNota = em.merge(oldAlunoOfNotaNewNota);
+                    }
+                }
+            }
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                String cpf = aluno.getCpf();
+                if (obter(em, cpf) == null) {
+                    return false;
+                }
+            }
+            throw ex;
+        }
+        return true;
     }
 }
-   
-    
-    
-    /*@Override
-    public void salvar () throws IOException{
-        File file = new File("Aluno.txt");
-        if(!file.exists())
-            file.createNewFile();
-        FileWriter fw = new FileWriter(file);
-        BufferedWriter bw = new BufferedWriter(fw);
-        for(Aluno aluno: this.listaAluno){
-            bw.write(aluno.getNome());
-            bw.newLine();
-            bw.write(aluno.getCpf());
-            bw.newLine();
-            if (aluno.getTurma().isEmpty())
-                bw.write("NULL");
-            else
-                for(int i = 0; i< aluno.getTurma().size(); i++){
-                    bw.write(aluno.getTurma().get(i).getId());
-                    bw.write(",");
-                }
-            bw.newLine();
-            if (aluno.getFalta().isEmpty())
-                bw.write("NULL");
-            else
-                for(int i = 0; i< aluno.getFalta().size(); i++){
-                    bw.write(aluno.getFalta().get(i).getId());
-                    bw.write(",");
-                }
-            bw.newLine();
-        }
-        bw.close();
-        fw.close();
-    }
-    
-    @Override
-    public void carregar () throws IOException{
-        File file = new File ("Aluno.txt");
-        FileReader fr = new FileReader (file);
-        BufferedReader br = new BufferedReader (fr);
-        while (br.ready()){
-            String nome = br.readLine();
-            String cpf = br.readLine();
-            Aluno aluno = new Aluno(nome, cpf);
-            this.inserir(aluno);
-            String[] turma = br.readLine().split(",");
-            for(String t: turma) {
-                Turma turmaConsultada = (Turma) TurmaDaoImpl.getInstancia().obter(t);
-                if((!(t.equals("NULL"))) && (turmaConsultada != null))
-                    turmaConsultada.adicionarAluno(aluno);
-            }
-            String[] falta = br.readLine().split(",");
-            for(String f: falta)
-                if((!(f.equals("NULL"))) && (FaltaDaoImpl.getInstancia().obter(f) != null))
-                    aluno.adicionarFalta(FaltaDaoImpl.getInstancia().obter(f));
-        }
-        br.close();
-        fr.close();
-    }*/
-//}

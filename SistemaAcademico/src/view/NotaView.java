@@ -3,6 +3,7 @@ package view;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Scanner;
+import javax.persistence.EntityManager;
 import model.dao.AlunoDaoImpl;
 import model.dao.AtividadeDaoImpl;
 import model.dao.Dao;
@@ -21,11 +22,11 @@ public class NotaView {
     private static Dao notaDao = NotaDaoImpl.getInstancia();
     private static Dao turmaDao = TurmaDaoImpl.getInstancia();
             
-    public Boolean cadastrar () {
+    public Boolean cadastrar (EntityManager em) throws Exception {
         scanner.useLocale(Locale.US);
         System.out.println("CADASTRO DE NOTAS");
         System.out.println("Atividade:");
-        Atividade atividade = (Atividade) this.obterCadastrado(atividadeDao);
+        Atividade atividade = (Atividade) this.obterCadastrado(em, atividadeDao);
         if (atividade == null)
             return false;
         if (!atividade.notasLancadas()) {
@@ -35,7 +36,7 @@ public class NotaView {
                         new Atividade()) <= -1) {
                     System.out.println("\nAtualize a nota do aluno abaixo nessa atividade:\n");
                     System.out.println(aluno.toString());
-                    String id = this.validarId();
+                    String id = this.validarId(em);
                     if (id == null) {
                         System.out.println("\nO registro de notas da atividade ainda não foi concluído"
                                 + " para todos os alunos. Você pode retomar a operação a qualquer momento.");
@@ -45,9 +46,7 @@ public class NotaView {
                     Double valorDaNota = scanner.nextDouble();
                     scanner.nextLine();
                     Nota nota = new Nota (id, valorDaNota, aluno, atividade);
-                    aluno.getNota().add(nota);
-                    atividade.getNota().add(nota);
-                    notaDao.inserir(nota);
+                    notaDao.salvar(em, nota);
                 }
             }
             atividade.setNotasLancadas(true);
@@ -61,13 +60,13 @@ public class NotaView {
         }
     }
     
-    public String validarId () {
+    public String validarId (EntityManager em) {
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (notaDao.indice(id) <= -1)
+            if (notaDao.obter(em, id) == null)
                 return id;
             else
                 System.out.println("\nUMA NOTA COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");
@@ -75,13 +74,13 @@ public class NotaView {
         return null;
     }
     
-    public Object obterCadastrado (Dao dao) {    
+    public Object obterCadastrado (EntityManager em, Dao dao) {    
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String entrada = scanner.nextLine();            
             if (entrada.equals("cancelar"))
                 break;
-            Object objeto = dao.obter(entrada);
+            Object objeto = dao.obter(em, entrada);
             if (objeto != null)
                 return objeto;
             else
@@ -90,17 +89,17 @@ public class NotaView {
         return null;
     }
     
-    public Boolean alterarNotasLancadas () {
+    public Boolean alterarNotasLancadas (EntityManager em) {
         scanner.useLocale(Locale.US);
         System.out.println("Informe o CPF do aluno:");
-        Aluno aluno = (Aluno) alunoDao.obter(scanner.nextLine());
+        Aluno aluno = (Aluno) alunoDao.obter(em, scanner.nextLine());
         if (aluno != null) {
             System.out.println("Informe o ID da turma:");
-            Turma turma = (Turma) turmaDao.obter(scanner.nextLine());
+            Turma turma = (Turma) turmaDao.obter(em, scanner.nextLine());
             if (turma != null) {
                 if (turma.getAluno().contains(aluno)) {
                     System.out.println("Informe o ID da atividade:");
-                    Atividade atividade = (Atividade) atividadeDao.obter(scanner.nextLine());
+                    Atividade atividade = (Atividade) atividadeDao.obter(em, scanner.nextLine());
                     if (atividade != null) {
                         if (atividade.getTurma().equals(turma)) {
                             if (atividade.notasLancadas()) {

@@ -3,24 +3,15 @@ package model.pojo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;     
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 public class Aluno implements Serializable,Comparable<Aluno> {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String cpf;
     private String nome;
     @ManyToMany
@@ -28,55 +19,62 @@ public class Aluno implements Serializable,Comparable<Aluno> {
 //            joinColumns={@JoinColumn(name="cpfAluno")})
     private List<Turma> turma = new ArrayList<>();
     @OneToMany
-    @JoinColumn(name = "cpfAluno")
+    //@JoinColumn(name = "cpfAluno")
     private List<Falta> falta = new ArrayList<>();
-    @OneToMany (mappedBy="aluno")
+    @OneToMany//(mappedBy="aluno")
     private List<Nota> nota = new ArrayList<>();
 
-    public Aluno() {
-     
-    }
-    
+    public Aluno() {}
            
     public Aluno (String nome, String cpf) {
-        this();
         this.nome = nome;
         this.cpf = cpf;
-    }
-    
-    public Long getId() {
-        return id;
-    }
+    }    
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-           
-      
-    public String getNome() {
-        return nome;
-    }
-    
     public String getCpf() {
         return cpf;
     }
 
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public List<Turma> getTurma() {
         return turma;
+    }
+
+    public void setTurma(List<Turma> turma) {
+        this.turma = turma;
+    }
+
+    public List<Falta> getFalta() {
+        return falta;
+    }
+
+    public void setFalta(List<Falta> falta) {
+        this.falta = falta;
+    }
+
+    public List<Nota> getNota() {
+        return nota;
+    }
+
+    public void setNota(List<Nota> nota) {
+        this.nota = nota;
     }
     
     public Boolean adicionarFalta(Falta falta){
         if(!this.getFalta().contains(falta))
             return this.getFalta().add(falta);
         return false;
-    }
-
-    public List<Falta> getFalta() {
-        return falta;
-    }
-    
-    public List<Nota> getNota(){
-        return nota;
     }
     
     public Boolean adicionarNota(Nota nota){

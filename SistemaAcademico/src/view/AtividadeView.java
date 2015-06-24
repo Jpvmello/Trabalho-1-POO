@@ -2,6 +2,7 @@ package view;
 
 import java.util.Locale;
 import java.util.Scanner;
+import javax.persistence.EntityManager;
 import model.dao.AtividadeDaoImpl;
 import model.dao.Dao;
 import model.dao.TurmaDaoImpl;
@@ -14,15 +15,15 @@ public class AtividadeView {
     private static Dao atividadeDao = AtividadeDaoImpl.getInstancia();
     private static Dao turmaDao = TurmaDaoImpl.getInstancia();
 
-    public Boolean cadastrar () {
+    public Boolean cadastrar (EntityManager em) throws Exception {
         scanner.useLocale(Locale.US);
         System.out.println("CADASTRO DE ATIVIDADES");
         System.out.println("Turma:");
-        Turma turma = (Turma) this.obterCadastrado(turmaDao);
+        Turma turma = (Turma) this.obterCadastrado(em, turmaDao);
         if(turma == null)
             return false;
         System.out.println("\nCadastre uma nova atividade:\n");
-        String id = this.validarId();
+        String id = this.validarId(em);
         if (id == null)
             return false;
         System.out.println("Nome: ");
@@ -35,17 +36,16 @@ public class AtividadeView {
         Double valor = scanner.nextDouble();
         scanner.nextLine();
         Atividade atividade = new Atividade (id, nome, tipo, data, valor, turma);
-        turma.getAtividade().add(atividade);
-        return atividadeDao.inserir(atividade);
+        return atividadeDao.salvar(em, atividade);
     }
     
-    public String validarId () {
+    public String validarId (EntityManager em) {
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (atividadeDao.indice(id) <= -1)
+            if (atividadeDao.obter(em, id) == null)
                 return id;
             else
                 System.out.println("\nUMA ATIVIDADE COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");
@@ -53,13 +53,13 @@ public class AtividadeView {
         return null;
     }
     
-    public Object obterCadastrado (Dao dao) {
+    public Object obterCadastrado (EntityManager em, Dao dao) {
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String entrada = scanner.nextLine();
             if (entrada.equals("cancelar"))
                 break;
-            Object objeto = dao.obter(entrada);
+            Object objeto = dao.obter(em, entrada);
             if (objeto != null)
                 return objeto;
             else

@@ -4,11 +4,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 public interface Dao<T> {
-    Boolean inserir (T objeto);
-    int indice (String id);
-    T obter (String id);
-    List<T> obterTodos ();
-    void persist(EntityManager em, T object);
-    /*void salvar () throws IOException;
-    void carregar () throws IOException;*/
+    Boolean salvar (EntityManager em, T objeto) throws Exception;
+    T obter (EntityManager em, String id);
+    List<T> obterTodos (EntityManager em);
+    Boolean atualizar (EntityManager em, T objeto) throws Exception;
 }

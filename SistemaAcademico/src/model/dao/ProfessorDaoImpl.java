@@ -1,19 +1,12 @@
 package model.dao;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import model.pojo.Atividade;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import model.pojo.Disciplina;
 import model.pojo.Professor;
-/*import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;*/
 
 public class ProfessorDaoImpl implements Dao<Professor> {
     private static List<Professor> listaProfessor = new ArrayList<>();
@@ -26,89 +19,84 @@ public class ProfessorDaoImpl implements Dao<Professor> {
     }
     
     @Override
-    public Boolean inserir (Professor professor) {
-        if (this.indice(professor.getCpf()) <= -1) {
-            listaProfessor.add(professor);
-            Collections.sort(listaProfessor);
-            return true;
+    public Boolean salvar (EntityManager em, Professor professor) throws Exception {
+        if (professor.getDisciplina() == null) {
+            professor.setDisciplina(new ArrayList<Disciplina>());
         }
-        return false;
-    }
-    
-    @Override
-    public int indice (String cpf) {
-        return Collections.binarySearch(listaProfessor, new Professor (null, cpf, null));
-    }
-    
-    @Override
-    public Professor obter (String cpf) {
-        if (this.indice(cpf) >= 0)
-            return listaProfessor.get(this.indice(cpf));
-        return null;
-    }
-    
-    @Override
-    public List<Professor> obterTodos () {
-        return listaProfessor;
-    }
-    @Override
-      public void persist(EntityManager em, Professor object) {
-        em.getTransaction().begin();
         try {
-            em.persist(object);
+            em.getTransaction().begin();
+            List<Disciplina> attachedDisciplina = new ArrayList<Disciplina>();
+            for (Disciplina disciplinaDisciplinaToAttach : professor.getDisciplina()) {
+                disciplinaDisciplinaToAttach = em.getReference(disciplinaDisciplinaToAttach.getClass(), disciplinaDisciplinaToAttach.getNome());
+                attachedDisciplina.add(disciplinaDisciplinaToAttach);
+            }
+            professor.setDisciplina(attachedDisciplina);
+            em.persist(professor);
+            for (Disciplina disciplinaDisciplina : professor.getDisciplina()) {
+                disciplinaDisciplina.getProfessor().add(professor);
+                disciplinaDisciplina = em.merge(disciplinaDisciplina);
+            }
             em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
+        } catch (Exception ex) {
+            if (obter(em, professor.getCpf()) != null) {
+                return false;
+            }
+            throw ex;
         }
-    }
-   
-    
-    /*@Override
-    public void salvar () throws IOException{
-        File file = new File("Professor.txt");
-        if(!file.exists())
-            file.createNewFile();
-        FileWriter fw = new FileWriter(file);
-        BufferedWriter bw = new BufferedWriter(fw);
-        for(Professor professor: this.listaProfessor){
-            bw.write(professor.getNome());
-            bw.newLine();
-            bw.write(professor.getCpf());
-            bw.newLine();
-            bw.write(professor.getDepartamento());
-            bw.newLine();
-            if (professor.getDisciplina().isEmpty())
-                bw.write("NULL");
-            else
-                for(int i = 0; i< professor.getDisciplina().size(); i++){
-                    bw.write(professor.getDisciplina().get(i).getNome());
-                    bw.write(",");
-                }
-            bw.newLine();
-        }
-        bw.close();
-        fw.close();
+        return true;
     }
     
     @Override
-    public void carregar () throws IOException{
-        File file = new File ("Professor.txt");
-        FileReader fr = new FileReader (file);
-        BufferedReader br = new BufferedReader (fr);
-        while (br.ready()){
-            String nome = br.readLine();
-            String cpf = br.readLine();
-            String departamento = br.readLine();
-            Professor professor = new Professor(nome,cpf,departamento);
-            this.inserir(professor);
-            String[] disciplina = br.readLine().split(",");
-            for(String d: disciplina)
-                if((!(d.equals("NULL"))) && (DisciplinaDaoImpl.getInstancia().obter(d) != null))
-                    professor.adicionarDisciplina(DisciplinaDaoImpl.getInstancia().obter(d));
+    public Professor obter(EntityManager em, String cpf) {
+        return em.find(Professor.class, cpf);
+    }
+
+    @Override
+    public List<Professor> obterTodos (EntityManager em) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Professor.class));
+        Query q = em.createQuery(cq);
+        return q.getResultList();
+    }
+    
+    @Override
+    public Boolean atualizar (EntityManager em, Professor professor) throws Exception {
+        try {
+            em.getTransaction().begin();
+            Professor persistentProfessor = em.find(Professor.class, professor.getCpf());
+            List<Disciplina> disciplinaOld = persistentProfessor.getDisciplina();
+            List<Disciplina> disciplinaNew = professor.getDisciplina();
+            List<Disciplina> attachedDisciplinaNew = new ArrayList<Disciplina>();
+            for (Disciplina disciplinaNewDisciplinaToAttach : disciplinaNew) {
+                disciplinaNewDisciplinaToAttach = em.getReference(disciplinaNewDisciplinaToAttach.getClass(), disciplinaNewDisciplinaToAttach.getNome());
+                attachedDisciplinaNew.add(disciplinaNewDisciplinaToAttach);
+            }
+            disciplinaNew = attachedDisciplinaNew;
+            professor.setDisciplina(disciplinaNew);
+            professor = em.merge(professor);
+            for (Disciplina disciplinaOldDisciplina : disciplinaOld) {
+                if (!disciplinaNew.contains(disciplinaOldDisciplina)) {
+                    disciplinaOldDisciplina.getProfessor().remove(professor);
+                    disciplinaOldDisciplina = em.merge(disciplinaOldDisciplina);
+                }
+            }
+            for (Disciplina disciplinaNewDisciplina : disciplinaNew) {
+                if (!disciplinaOld.contains(disciplinaNewDisciplina)) {
+                    disciplinaNewDisciplina.getProfessor().add(professor);
+                    disciplinaNewDisciplina = em.merge(disciplinaNewDisciplina);
+                }
+            }
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                String cpf = professor.getCpf();
+                if (obter(em, cpf) == null) {
+                    return false;
+                }
+            }
+            throw ex;
         }
-        br.close();
-        fr.close();
-    }*/
+        return true;
+    }
 }

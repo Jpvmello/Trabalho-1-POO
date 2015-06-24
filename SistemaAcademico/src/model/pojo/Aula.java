@@ -2,74 +2,67 @@ package model.pojo;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- *
- * @author Filipe
- */
 @Entity
 public class Aula implements Serializable, Comparable<Aula> {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String id1;
+    private String id;
     private String diaDaSemana;
     private String local;
-    private String Hora;
+    private String hora;
     
     public Aula(){}
     
-    public Aula (String id1, String diaDaSemana, String hora, String local) {
-        this.id1 = id1;
+    public Aula (String id, String diaDaSemana, String hora, String local) {
+        this.id = id;
         this.diaDaSemana = diaDaSemana;
-        this.Hora = hora;
+        this.hora = hora;
         this.local = local;
     }
-    
-    public String getId1() {
-        return id1;
+
+    public String getId() {
+        return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getDiaDaSemana() {
         return diaDaSemana;
+    }
+
+    public void setDiaDaSemana(String diaDaSemana) {
+        this.diaDaSemana = diaDaSemana;
     }
 
     public String getLocal() {
         return local;
     }
 
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
     public String getHora() {
-        return Hora;
+        return hora;
     }
 
-    public void setHora(String Hora) {
-        this.Hora = Hora;
+    public void setHora(String hora) {
+        this.hora = hora;
     }
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    
-       
     @Override
     public int compareTo (Aula aula) {
-        return this.id1.compareTo(aula.id1);
+        return this.id.compareTo(aula.id);
     }
     
     @Override
     public String toString () {
         return ("ID: " + this.id + "\nDia da semana: " + this.diaDaSemana +
-                "\nHora: " + this.Hora + "\nLocal: " + this.local + "\n");
+                "\nHora: " + this.hora + "\nLocal: " + this.local + "\n");
     }
     
 }

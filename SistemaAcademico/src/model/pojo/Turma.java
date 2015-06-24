@@ -4,11 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-//import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-//import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -16,19 +12,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-//import org.hibernate.annotations.Cascade;
 
 @Entity
 public class Turma implements Serializable, Comparable<Turma> {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String id1;
+    private String id;
     private Integer ano;
     private Integer periodo;
-    private String local;
-    private String horario;
     private Integer numeroDeVagas;
     @ManyToOne
     @JoinColumn(name="nomeDisciplina")
@@ -37,24 +28,22 @@ public class Turma implements Serializable, Comparable<Turma> {
     @JoinColumn(name="cpfProfessor")
     private Professor professor;
     @ManyToMany
-//    @JoinTable(name="AulaTurma", inverseJoinColumns={@JoinColumn(name="IdAula")},
-//            joinColumns={@JoinColumn(name="idTurma")})   
+    @JoinTable(name="AulaTurma", inverseJoinColumns={@JoinColumn(name="IdAula")},
+            joinColumns={@JoinColumn(name="idTurma")})   
 //(mappedBy="turma",targetEntity = Aula.class, fetch = FetchType.LAZY)
     private List<Aula> aula = new ArrayList<>();
     @ManyToMany
-//    @JoinTable(name="AlunoTurma", inverseJoinColumns={@JoinColumn(name="cpfAluno")},
-//            joinColumns={@JoinColumn(name="idTurma")})
+    @JoinTable(name="AlunoTurma", inverseJoinColumns={@JoinColumn(name="cpfAluno")},
+            joinColumns={@JoinColumn(name="idTurma")})
     private List<Aluno> aluno = new ArrayList<>();
     @OneToMany(mappedBy="turma")
     private List<Atividade> atividade = new ArrayList<>();
-    
 
-    public Turma() {
-    }
+    public Turma() {}
     
-    public Turma (String id1, Integer ano, Integer periodo, Integer numeroDeVagas,
+    public Turma (String id, Integer ano, Integer periodo, Integer numeroDeVagas,
             Disciplina disciplina, Professor professor, List<Aula> aula, List<Aluno> aluno) {
-        this.id1 = id1;
+        this.id = id;
         this.ano = ano;
         this.periodo = periodo;
         this.numeroDeVagas = numeroDeVagas;
@@ -62,52 +51,80 @@ public class Turma implements Serializable, Comparable<Turma> {
         this.professor = professor;
         if(aula != null)
             this.aula = aula;
-        if(aluno !=null)
+        if(aluno != null)
             this.aluno = aluno;
     }
-    
-    public String getId1 () {
-        return id1;
+
+    public String getId() {
+        return id;
     }
-    
-    public Integer getAno () {
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Integer getAno() {
         return ano;
     }
-    
-    public Integer getPeriodo () {
+
+    public void setAno(Integer ano) {
+        this.ano = ano;
+    }
+
+    public Integer getPeriodo() {
         return periodo;
     }
-    
-    public Integer getNumeroDeVagas () {
+
+    public void setPeriodo(Integer periodo) {
+        this.periodo = periodo;
+    }
+
+    public Integer getNumeroDeVagas() {
         return numeroDeVagas;
     }
-    
-    public Disciplina getDisciplina () {
+
+    public void setNumeroDeVagas(Integer numeroDeVagas) {
+        this.numeroDeVagas = numeroDeVagas;
+    }
+
+    public Disciplina getDisciplina() {
         return disciplina;
     }
-    
-    public void setDisciplina (Disciplina disciplina) {
+
+    public void setDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
     }
-    
-    public Professor getProfessor () {
+
+    public Professor getProfessor() {
         return professor;
     }
-    
-    public void setProfessor (Professor professor) {
+
+    public void setProfessor(Professor professor) {
         this.professor = professor;
     }
-    
-    public List<Aula> getAula () {
+
+    public List<Aula> getAula() {
         return aula;
     }
-    
-    public List<Aluno> getAluno () {
+
+    public void setAula(List<Aula> aula) {
+        this.aula = aula;
+    }
+
+    public List<Aluno> getAluno() {
         return aluno;
     }
-    
-    public List<Atividade> getAtividade () {
+
+    public void setAluno(List<Aluno> aluno) {
+        this.aluno = aluno;
+    }
+
+    public List<Atividade> getAtividade() {
         return atividade;
+    }
+
+    public void setAtividade(List<Atividade> atividade) {
+        this.atividade = atividade;
     }
     
     public Boolean adicionarAula (Aula aula) {

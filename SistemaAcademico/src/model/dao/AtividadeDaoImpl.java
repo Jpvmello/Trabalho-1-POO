@@ -1,19 +1,13 @@
 package model.dao;
 
-/*import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;*/
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 import model.pojo.Atividade;
-import model.pojo.Aula;
+import model.pojo.Nota;
+import model.pojo.Turma;
 
 public class AtividadeDaoImpl implements Dao<Atividade> {
     
@@ -27,96 +21,117 @@ public class AtividadeDaoImpl implements Dao<Atividade> {
     }
     
     @Override
-    public Boolean inserir (Atividade atividade) {
-        if (this.indice(atividade.getId()) <= -1) {
-            listaAtividade.add(atividade);
-            Collections.sort(listaAtividade);
-            return true;
+    public Boolean salvar (EntityManager em, Atividade atividade) throws Exception {
+        if (atividade.getNota() == null) {
+            atividade.setNota(new ArrayList<Nota>());
         }
-        return false;
-    }
-    
-    @Override
-    public int indice (String id) {
-        return Collections.binarySearch(listaAtividade, new Atividade (id, null, 
-                null, null, null, null));
-    }
-    
-    @Override
-    public Atividade obter (String id) {
-        if (this.indice(id) >= 0)
-            return listaAtividade.get(this.indice(id));
-        return null;
-    }
-    
-    @Override
-    public List<Atividade> obterTodos () {
-        return listaAtividade;
-    }
-    @Override  
-    public void persist(EntityManager em, Atividade object) {
-        em.getTransaction().begin();
         try {
-            em.persist(object);
+            em.getTransaction().begin();
+            Turma turma = atividade.getTurma();
+            if (turma != null) {
+                turma = em.getReference(turma.getClass(), turma.getId());
+                atividade.setTurma(turma);
+            }
+            List<Nota> attachedNota = new ArrayList<Nota>();
+            for (Nota notaNotaToAttach : atividade.getNota()) {
+                notaNotaToAttach = em.getReference(notaNotaToAttach.getClass(), notaNotaToAttach.getId());
+                attachedNota.add(notaNotaToAttach);
+            }
+            atividade.setNota(attachedNota);
+            em.persist(atividade);
+            if (turma != null) {
+                turma.getAtividade().add(atividade);
+                turma = em.merge(turma);
+            }
+            for (Nota notaNota : atividade.getNota()) {
+                Atividade oldAtividadeOfNotaNota = notaNota.getAtividade();
+                notaNota.setAtividade(atividade);
+                notaNota = em.merge(notaNota);
+                if (oldAtividadeOfNotaNota != null) {
+                    oldAtividadeOfNotaNota.getNota().remove(notaNota);
+                    oldAtividadeOfNotaNota = em.merge(oldAtividadeOfNotaNota);
+                }
+            }
             em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
+        } catch (Exception ex) {
+            if (obter(em, atividade.getId()) != null) {
+                return false;
+            }
+            throw ex;
         }
+        return true;
+    }
+    
+    @Override
+    public Atividade obter(EntityManager em, String id) {
+        return em.find(Atividade.class, id);
     }
 
-    
-    
-    /*@Override
-    public void salvar () throws IOException{
-        File file = new File ("Atividade.txt");
-        if (!(file.exists()))
-            file.createNewFile();
-        FileWriter fw = new FileWriter (file);
-        BufferedWriter bw = new BufferedWriter (fw);
-        for (Atividade atividade: this.listaAtividade){
-            bw.write (atividade.getId());
-            bw.newLine ();
-            bw.write (atividade.getNome());
-            bw.newLine ();
-            bw.write (atividade.getTipo());
-            bw.newLine ();
-            bw.write (atividade.getData());
-            bw.newLine ();
-            bw.write (atividade.getValor().toString());
-            bw.newLine ();
-            bw.write (atividade.notasLancadas().toString());
-            bw.newLine ();
-            bw.write (atividade.getTurma().getId());
-            bw.newLine();
-        }
-        bw.close();
-        fw.close();
+    @Override
+    public List<Atividade> obterTodos (EntityManager em) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Atividade.class));
+        Query q = em.createQuery(cq);
+        return q.getResultList();
     }
     
-    @Override
-    public void carregar () throws IOException{
-        File file = new File ("Atividade.txt");
-        FileReader fr = new FileReader (file);
-        BufferedReader br = new BufferedReader (fr);
-        while (br.ready()){
-            String id = br.readLine();
-            String nome = br.readLine();
-            String tipo = br.readLine();
-            String data = br.readLine();
-            Double valor = Double.parseDouble(br.readLine());
-            Boolean notasLancadas = Boolean.parseBoolean(br.readLine());
-            String turma = br.readLine();
-            Atividade atividade = new Atividade (id, nome, tipo, data, valor, null);
-            atividade.setNotasLancadas(notasLancadas);
-            this.inserir(atividade);
-            if (TurmaDaoImpl.getInstancia().obter(turma) != null){
-                atividade.setTurma(TurmaDaoImpl.getInstancia().obter(turma));
-                atividade.getTurma().adicionarAtividade(atividade);
+    @Override  
+    public Boolean atualizar (EntityManager em, Atividade atividade) throws Exception {
+        try {
+            em.getTransaction().begin();
+            Atividade persistentAtividade = em.find(Atividade.class, atividade.getId());
+            Turma turmaOld = persistentAtividade.getTurma();
+            Turma turmaNew = atividade.getTurma();
+            List<Nota> notaOld = persistentAtividade.getNota();
+            List<Nota> notaNew = atividade.getNota();
+            if (turmaNew != null) {
+                turmaNew = em.getReference(turmaNew.getClass(), turmaNew.getId());
+                atividade.setTurma(turmaNew);
             }
+            List<Nota> attachedNotaNew = new ArrayList<Nota>();
+            for (Nota notaNewNotaToAttach : notaNew) {
+                notaNewNotaToAttach = em.getReference(notaNewNotaToAttach.getClass(), notaNewNotaToAttach.getId());
+                attachedNotaNew.add(notaNewNotaToAttach);
+            }
+            notaNew = attachedNotaNew;
+            atividade.setNota(notaNew);
+            atividade = em.merge(atividade);
+            if (turmaOld != null && !turmaOld.equals(turmaNew)) {
+                turmaOld.getAtividade().remove(atividade);
+                turmaOld = em.merge(turmaOld);
+            }
+            if (turmaNew != null && !turmaNew.equals(turmaOld)) {
+                turmaNew.getAtividade().add(atividade);
+                turmaNew = em.merge(turmaNew);
+            }
+            for (Nota notaOldNota : notaOld) {
+                if (!notaNew.contains(notaOldNota)) {
+                    notaOldNota.setAtividade(null);
+                    notaOldNota = em.merge(notaOldNota);
+                }
+            }
+            for (Nota notaNewNota : notaNew) {
+                if (!notaOld.contains(notaNewNota)) {
+                    Atividade oldAtividadeOfNotaNewNota = notaNewNota.getAtividade();
+                    notaNewNota.setAtividade(atividade);
+                    notaNewNota = em.merge(notaNewNota);
+                    if (oldAtividadeOfNotaNewNota != null && !oldAtividadeOfNotaNewNota.equals(atividade)) {
+                        oldAtividadeOfNotaNewNota.getNota().remove(notaNewNota);
+                        oldAtividadeOfNotaNewNota = em.merge(oldAtividadeOfNotaNewNota);
+                    }
+                }
+            }
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                String id = atividade.getId();
+                if (obter(em, id) == null) {
+                    return false;
+                }
+            }
+            throw ex;
         }
-        br.close();
-        fr.close();
-    }*/
+        return true;
+    }
 }

@@ -2,6 +2,7 @@ package view;
 
 import java.util.Collections;
 import java.util.Scanner;
+import javax.persistence.EntityManager;
 import model.dao.Dao;
 import model.dao.FaltaDaoImpl;
 import model.dao.TurmaDaoImpl;
@@ -15,10 +16,10 @@ public class FaltaView {
     private static Dao faltaDao = FaltaDaoImpl.getInstancia();
     private static Dao turmaDao = TurmaDaoImpl.getInstancia();
     
-    public Boolean cadastrar () {
+    public Boolean cadastrar (EntityManager em) throws Exception {
         System.out.println("CADASTRO DE FALTAS");
         System.out.println("Turma:");
-        Turma turma = (Turma) this.obterCadastrado(turmaDao);
+        Turma turma = (Turma) this.obterCadastrado(em, turmaDao);
         if (turma == null)
             return false;
         if (!turma.faltasLancadas()) {
@@ -28,7 +29,7 @@ public class FaltaView {
                         new Falta()) <= -1) {
                     System.out.println("\nAtualize o registro de faltas do aluno abaixo:\n");
                     System.out.println(aluno.toString() + "\n");
-                    String id = this.validarId();
+                    String id = this.validarId(em);
                     if (id == null) {
                         System.out.println("\nO registro de faltas ainda não foi concluído para todos os"
                                 + " alunos da turma. Você pode retomar a operação a qualquer momento.");
@@ -39,7 +40,7 @@ public class FaltaView {
                     scanner.nextLine();
                     Falta falta = new Falta (id, numeroDeFalta, turma);
                     aluno.getFalta().add(falta);
-                    faltaDao.inserir(falta);
+                    faltaDao.salvar(em, falta);
                 }
             }
             return true;
@@ -50,13 +51,13 @@ public class FaltaView {
         }
     }
     
-    public String validarId () {
+    public String validarId (EntityManager em) {
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (faltaDao.indice(id) <= -1)
+            if (faltaDao.obter(em, id) == null)
                 return id;
             else
                 System.out.println("\nUM REGISTRO DE FALTAS COM ESTE ID JÁ ESTÁ CADASTRADO!"
@@ -65,13 +66,13 @@ public class FaltaView {
         return null;
     }
     
-    public Object obterCadastrado (Dao dao) {    
+    public Object obterCadastrado (EntityManager em, Dao dao) {    
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String entrada = scanner.nextLine();
             if (entrada.equals("cancelar"))
                 break;
-            Object objeto = dao.obter(entrada);
+            Object objeto = dao.obter(em, entrada);
             if (objeto != null)
                 return objeto;
             else

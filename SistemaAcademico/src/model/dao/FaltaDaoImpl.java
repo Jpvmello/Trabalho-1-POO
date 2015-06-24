@@ -1,19 +1,11 @@
 package model.dao;
 
-import java.util.Collections;
 import java.util.List;
 import model.pojo.Falta;
-/*import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;*/
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import model.pojo.Atividade;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 public class FaltaDaoImpl implements Dao<Falta> {    
     private static List<Falta> listaFalta = new ArrayList<>();
@@ -26,79 +18,42 @@ public class FaltaDaoImpl implements Dao<Falta> {
     }
     
     @Override
-    public Boolean inserir (Falta falta) {
-        if (this.indice(falta.getId()) <= -1) {
-            listaFalta.add(falta);
-            Collections.sort(listaFalta);
-            return true;
-        }
-        return false;
-    }
-    
-    @Override
-    public int indice (String id) {
-        return Collections.binarySearch(listaFalta, new Falta (id, null, null));
-    }
-    
-    @Override
-    public Falta obter (String id) {
-        if (this.indice(id) >= 0)
-            return listaFalta.get(this.indice(id));
-        return null;
-    }
-    
-    @Override
-    public List<Falta> obterTodos () {
-        return listaFalta;
-    }
-    @Override
-      public void persist(EntityManager em, Falta object) {
+    public Boolean salvar (EntityManager em, Falta falta) {
         em.getTransaction().begin();
-        try {
-            em.persist(object);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
-        }
-    }
- 
-    
-    /*@Override
-    public void salvar () throws IOException{
-        File file = new File("Falta.txt");
-        if(!file.exists())
-            file.createNewFile();
-        FileWriter fw = new FileWriter(file);
-        BufferedWriter bw = new BufferedWriter(fw);
-        for(Falta falta: this.listaFalta){
-            bw.write(falta.getId());
-            bw.newLine();
-            bw.write(falta.getFalta().toString());
-            bw.newLine();
-            bw.write(falta.getTurma().getId());
-            bw.newLine();
-        }
-        bw.close();
-        fw.close();
+        em.persist(falta);
+        em.getTransaction().commit();
+        return true;
     }
     
     @Override
-    public void carregar () throws IOException{
-        File file = new File ("Falta.txt");
-        FileReader fr = new FileReader (file);
-        BufferedReader br = new BufferedReader (fr);
-        while (br.ready()){
-            String id = br.readLine();
-            Integer numFalta = Integer.parseInt(br.readLine());
-            String turma = br.readLine();
-            Falta falta = new Falta(id, numFalta, null);
-            this.inserir(falta);
-            if (TurmaDaoImpl.getInstancia().obter(turma) != null)
-                falta.setTurma(TurmaDaoImpl.getInstancia().obter(turma));
+    public Falta obter (EntityManager em, String id) {
+        return em.find(Falta.class, id);
+    }
+
+    @Override
+    public List<Falta> obterTodos (EntityManager em) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Falta.class));
+        Query q = em.createQuery(cq);
+        return q.getResultList();
+    }
+    
+    @Override
+    public Boolean atualizar (EntityManager em, Falta falta) throws Exception {
+        try {
+            em.getTransaction().begin();
+            falta = em.merge(falta);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                String id = falta.getId();
+                if (obter(em, id) == null) {
+                    return false;
+                }
             }
-        br.close();
-        fr.close();
-    }*/
+            throw ex;
+        }
+        return true;
+    }
 }

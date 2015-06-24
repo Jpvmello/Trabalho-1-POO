@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import javax.persistence.EntityManager;
 import model.dao.AlunoDaoImpl;
 import model.dao.AulaDaoImpl;
 import model.dao.Dao;
@@ -28,19 +29,19 @@ public class TurmaView {
     private static Dao professorDao = ProfessorDaoImpl.getInstancia();
     private static Dao turmaDao = TurmaDaoImpl.getInstancia();
     
-    public Boolean cadastrar () {
+    public Boolean cadastrar (EntityManager em) throws Exception {
         System.out.println("CADASTRO DE TURMAS");
         System.out.println("Disciplina (ID: nome):");
-        Disciplina disciplina = (Disciplina) this.obterCadastrado(disciplinaDao);
+        Disciplina disciplina = (Disciplina) this.obterCadastrado(em, disciplinaDao);
         if (disciplina == null)
             return false;
         System.out.println("Professor (ID: CPF):");
-        Professor professor = this.obterCadastrado(disciplina);
+        Professor professor = this.obterCadastrado(em, disciplina);
         if (professor == null)
             return false;
         
         System.out.println("\nCadastre uma nova turma:\n");
-        String id = this.validarId();
+        String id = this.validarId(em);
         if (id == null)
             return false;
         System.out.println("Ano: ");
@@ -58,25 +59,24 @@ public class TurmaView {
         System.out.println("\nDetermine as aulas a serem adicionadas.");
         System.out.println("(Novas aulas podem ser adicionadas a qualquer momento a partir da opção"
                 + " \"GERENCIAR TURMAS E DISCIPLINAS\" no menu principal)");
-        List<Aula> listaAula = (List<Aula>) this.montarListaDeCadastrados(disciplina, aulaDao);
+        List<Aula> listaAula = (List<Aula>) this.montarListaDeCadastrados(em, disciplina, aulaDao);
         
         System.out.println("\nDetermine as alunos (ID: CPF) a serem matriculados.");
         System.out.println("(Novos alunos podem ser matriculados a qualquer momento a partir da opção"
                 + " \"GERENCIAR TURMAS E DISCIPLINAS\" no menu principal)");
-        List<Aluno> listaAluno = (List<Aluno>) this.montarListaDeCadastrados(disciplina, alunoDao);
+        List<Aluno> listaAluno = (List<Aluno>) this.montarListaDeCadastrados(em, disciplina, alunoDao);
         Turma turma = new Turma (id, ano, periodo, numeroDeVagas, disciplina, professor, listaAula, listaAluno);
         
-        disciplina.getTurma().add(turma);
-        return turmaDao.inserir(turma);
+        return turmaDao.salvar(em, turma);
     }
     
-    public String validarId () {
+    public String validarId (EntityManager em) {
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String id = scanner.nextLine();
             if (id.equals("cancelar"))
                 break;
-            if (turmaDao.indice(id) <= -1)
+            if (turmaDao.obter(em, id) == null)
                 return id;
             else
                 System.out.println("\nUMA TURMA COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");
@@ -84,13 +84,13 @@ public class TurmaView {
         return null;
     }
     
-    public Boolean matricularAluno(){
+    public Boolean matricularAluno(EntityManager em){
         System.out.println("MATRÍCULA DE ALUNOS\nMatricule um aluno:\n");
         System.out.println("Informe o CPF do aluno: ");
-        Aluno aluno = (Aluno) alunoDao.obter(scanner.nextLine());
+        Aluno aluno = (Aluno) alunoDao.obter(em, scanner.nextLine());
         if (aluno != null) {
             System.out.println("Informe a turma na qual será efetuada a matrícula: ");
-            Turma turma = (Turma) turmaDao.obter(scanner.nextLine());
+            Turma turma = (Turma) turmaDao.obter(em, scanner.nextLine());
             if(turma != null)
                 if (turma.adicionarAluno(aluno))
                     return true;
@@ -108,7 +108,7 @@ public class TurmaView {
         return false;
     }
     
-    public Boolean listarAlunos () {
+    public Boolean listarAlunos (EntityManager em) {
         Boolean sucesso = false;
         System.out.println("\nIdentifique a turma procurada: ");
         System.out.println("* Disciplina: ");
@@ -119,13 +119,13 @@ public class TurmaView {
         System.out.println("* Período: ");
         Integer periodo = scanner.nextInt();
         scanner.nextLine();
-        List<Turma> listaTurma = (List<Turma>) turmaDao.obterTodos();
+        List<Turma> listaTurma = (List<Turma>) turmaDao.obterTodos(em);
         if (listaTurma.size() > 0)
             for (Turma turma: listaTurma) {
                 if (turma.getDisciplina().getNome().equals(disciplina))
                     if (turma.getAno().equals(ano))
                         if (turma.getPeriodo().equals(periodo)) {
-                            System.out.println("\nTURMA " + turma.getId1() + ":");
+                            System.out.println("\nTURMA " + turma.getId() + ":");
                             if (turma.todasAsNotasLancadas() && turma.faltasLancadas())
                                 for (Aluno aluno: turma.getAluno())
                                     this.imprimirSituacaoAluno(aluno, turma);
@@ -138,12 +138,12 @@ public class TurmaView {
         return sucesso;
     }
     
-    public Boolean consultarSituacaoAluno(){
+    public Boolean consultarSituacaoAluno(EntityManager em){
         System.out.println("Informe o CPF do aluno: ");
-        Aluno aluno = (Aluno) alunoDao.obter(scanner.nextLine());
+        Aluno aluno = (Aluno) alunoDao.obter(em, scanner.nextLine());
         if (aluno != null) {
             System.out.println("Informe o nome da disciplina: ");
-            Disciplina disciplina = (Disciplina) disciplinaDao.obter(scanner.nextLine());
+            Disciplina disciplina = (Disciplina) disciplinaDao.obter(em, scanner.nextLine());
             if(disciplina != null){
                 Turma turma = disciplina.turmaQueContem(aluno);
                 if (turma != null) {
@@ -186,13 +186,13 @@ public class TurmaView {
         System.out.println("Faltas: " + aluno.getFalta().get(indiceFalta).getFalta());
     }
     
-    public Object obterCadastrado (Dao dao) {    
+    public Object obterCadastrado (EntityManager em, Dao dao) {    
         while (true) {
             System.out.println("ID (\"cancelar\" para cancelar): ");
             String entrada = scanner.nextLine();
             if (entrada.equals("cancelar"))
                 break;
-            Object objeto = dao.obter(entrada);
+            Object objeto = dao.obter(em, entrada);
             if (objeto != null)
                 return objeto;
             else
@@ -201,9 +201,9 @@ public class TurmaView {
         return null;
     }
     
-    public Professor obterCadastrado (Disciplina disciplina) {
+    public Professor obterCadastrado (EntityManager em, Disciplina disciplina) {
         Professor professor = null;
-        while ((professor = (Professor) this.obterCadastrado(professorDao)) != null) {
+        while ((professor = (Professor) this.obterCadastrado(em, professorDao)) != null) {
             if (professor.getDisciplina().contains(disciplina))
                 break;
             else
@@ -213,14 +213,14 @@ public class TurmaView {
         return professor;
     }
     
-    public List<? extends Object> montarListaDeCadastrados (Disciplina disciplina, Dao dao) {
+    public List<? extends Object> montarListaDeCadastrados (EntityManager em, Disciplina disciplina, Dao dao) {
         List<Object> listaObjeto = new ArrayList<>();
         while (true) {
             Boolean possivelAdicionar = true;
             System.out.println("\nContinuar? ");
             System.out.println("Digite \"sim\" para continuar ou qualquer outro para não: ");
             if (scanner.nextLine().equals("sim")) {
-                Object objeto = this.obterCadastrado(dao);
+                Object objeto = this.obterCadastrado(em, dao);
                 if (objeto != null) {
                     if (dao instanceof AlunoDaoImpl) {
                         Aluno aluno = (Aluno) objeto;
@@ -242,12 +242,12 @@ public class TurmaView {
         return listaObjeto;
     }
     
-    public Boolean atribuirAula () {
+    public Boolean atribuirAula (EntityManager em) {
         System.out.println("Informe o ID da turma: ");
-        Turma turma = (Turma) turmaDao.obter(scanner.nextLine());
+        Turma turma = (Turma) turmaDao.obter(em, scanner.nextLine());
         if(turma != null) {
             System.out.println("Informe o ID da aula a ser atribuída à turma: ");
-            Aula aula = (Aula) aulaDao.obter(scanner.nextLine());
+            Aula aula = (Aula) aulaDao.obter(em, scanner.nextLine());
             if (aula != null)
                 if (turma.adicionarAula(aula))
                     return true;

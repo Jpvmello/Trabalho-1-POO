@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -17,7 +13,6 @@ import javax.persistence.OneToMany;
 public class Disciplina implements Serializable,  Comparable<Disciplina> {
     private static final long serialVersionUID = 1L;
     @Id
-     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String nome;
     private String ementa;
     private Integer cargaHoraria;
@@ -25,35 +20,55 @@ public class Disciplina implements Serializable,  Comparable<Disciplina> {
 //    @JoinTable(name="DisciplinaProfessor", inverseJoinColumns={@JoinColumn(name="cpfProfessor")},
 //            joinColumns={@JoinColumn(name="nomeDisciplina")})
     private List<Professor> professor = new ArrayList<>();
-    @OneToMany(mappedBy="disciplina")
+    @OneToMany//(mappedBy="disciplina")
     private List<Turma> turma = new ArrayList<>();
-    public Disciplina() {
-    }
+    
+    public Disciplina() {}
     
     public Disciplina(String nome, String ementa, Integer cargaHoraria){
         this.nome = nome;
         this.ementa = ementa;
         this.cargaHoraria = cargaHoraria;
     }
-    
-    public String getNome(){
+
+    public String getNome() {
         return nome;
     }
-    
-    public String getEmenta(){
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmenta() {
         return ementa;
     }
-    
-    public Integer getCargaHoraria(){
+
+    public void setEmenta(String ementa) {
+        this.ementa = ementa;
+    }
+
+    public Integer getCargaHoraria() {
         return cargaHoraria;
     }
-    
-    public List<Professor> getProfessor(){
+
+    public void setCargaHoraria(Integer cargaHoraria) {
+        this.cargaHoraria = cargaHoraria;
+    }
+
+    public List<Professor> getProfessor() {
         return professor;
     }
-    
-    public List<Turma> getTurma(){
+
+    public void setProfessor(List<Professor> professor) {
+        this.professor = professor;
+    }
+
+    public List<Turma> getTurma() {
         return turma;
+    }
+
+    public void setTurma(List<Turma> turma) {
+        this.turma = turma;
     }
 
     public Turma turmaQueContem (Aluno aluno) {

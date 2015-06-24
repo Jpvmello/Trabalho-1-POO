@@ -3,10 +3,7 @@ package model.pojo;
 import java.io.Serializable;
 import java.util.Comparator;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
@@ -14,64 +11,56 @@ import javax.persistence.ManyToOne;
 public class Nota implements Serializable, Comparable<Nota>, Comparator<Nota> {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String id1;
+    private String id;
     private Double nota;
     @ManyToOne
-    @JoinColumn(name="cpfAluno")
+    //@JoinColumn(name="cpfAluno")
     private Aluno aluno;
     @ManyToOne
-    @JoinColumn(name="idAtividade")
+    //@JoinColumn(name="idAtividade")
     private Atividade atividade;
  
-    public Nota() {
+    public Nota() {}
+    
+    public Nota (String id, Double nota, Aluno aluno, Atividade atividade){
+        this.id = id;
+        this.nota = nota;
+        this.aluno = aluno;
+        this.atividade = atividade;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
-    
-    
-    public Nota (String id, Double nota, Aluno aluno, Atividade atividade){
-        this.id1 = id;
-        this.nota = nota;
-        this.aluno = aluno;
-        this.atividade = atividade;
-    }
-    
-    public String getId1 (){
-        return id1;
-    }
-    
-    public Double getNota(){
+
+    public Double getNota() {
         return nota;
     }
-    
-    public void setNota(Double nota){
+
+    public void setNota(Double nota) {
         this.nota = nota;
     }
-    
-    public Aluno getAluno(){
+
+    public Aluno getAluno() {
         return aluno;
     }
-    
-    public void setAluno(Aluno aluno){
+
+    public void setAluno(Aluno aluno) {
         this.aluno = aluno;
     }
-    
-    public Atividade getAtividade(){
+
+    public Atividade getAtividade() {
         return atividade;
     }
-    
-    public void setAtividade(Atividade atividade){
+
+    public void setAtividade(Atividade atividade) {
         this.atividade = atividade;
     }
-    
+     
     @Override
     public int compareTo (Nota nota){
         return this.id.compareTo(nota.id);
@@ -84,7 +73,7 @@ public class Nota implements Serializable, Comparable<Nota>, Comparator<Nota> {
     
     @Override
     public String toString () {
-        return ("ID: " + this.id1 + "\nNotas: " + this.nota + "\nAluno: " 
+        return ("ID: " + this.id + "\nNotas: " + this.nota + "\nAluno: " 
                 + this.aluno.getNome() + "\nAtividade: " + atividade.getNome() 
                 + "("+atividade.getTipo()+")" + "\n");
     }    
