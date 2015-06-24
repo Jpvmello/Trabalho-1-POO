@@ -1,5 +1,6 @@
 package view;
 
+import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
 import model.dao.Dao;
@@ -50,4 +51,13 @@ public class ProfessorView {
         System.out.println("\nNÃO EXISTE PROFESSOR(A) CADASTRADO(A) COM ESTE CPF!\n");
         return false;
     }    
+    
+     public void listar(EntityManager em){
+        
+        System.out.println("-------Lista de Professores Cadastrados-------");
+        List<Professor> attachedProfessor = professorDao.obterTodos(em);
+        for(Professor professor : attachedProfessor){
+        professor.toString();
+        }
+    }
 }

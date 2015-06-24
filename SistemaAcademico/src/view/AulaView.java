@@ -1,5 +1,6 @@
 package view;
 
+import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
 import model.dao.AulaDaoImpl;
@@ -38,5 +39,13 @@ public class AulaView {
                 System.out.println("\nUMA AULA COM ESTE ID JÁ ESTÁ CADASTRADA! TENTE NOVAMENTE!\n");
         }
         return null;
+    }
+    public void listar(EntityManager em){
+        
+        System.out.println("-------Lista de Aulas Cadastradas-------");
+        List<Aula> attachedAula = aulaDao.obterTodos(em);
+        for(Aula aula : attachedAula){
+        aula.toString();
+        }
     }
 }
