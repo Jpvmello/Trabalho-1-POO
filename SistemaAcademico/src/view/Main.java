@@ -11,6 +11,7 @@ import view.cadastros.CadastrarAlunoGUI;
 import view.cadastros.CadastrarAtividadeGUI;
 import view.cadastros.CadastrarAulaGUI;
 import view.cadastros.CadastrarDisciplinaGUI;
+import view.listagens.ListarGUI;
 
 public class Main {
     
@@ -261,7 +262,9 @@ public class Main {
                         break;
                     }
                     case 2: {
-                        //main.imprimirMenuListagem(em);
+                        ListarGUI listarAluno = new ListarGUI(em);
+                        listarAluno.setTitle("LISTAR ALUNOS!2");
+                        listarAluno.setVisible(true);
                         break;
                     }
                     case 3: {
