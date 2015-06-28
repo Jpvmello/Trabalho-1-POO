@@ -13,30 +13,12 @@ public class AlunoView {
     private static Scanner scanner = new Scanner (System.in);
     private static final Dao alunoDao = AlunoDaoImpl.getInstancia();
         
-    public Boolean cadastrar (EntityManager em) throws Exception {
-        System.out.println("CADASTRO DE ALUNOS\nCadastre um novo aluno:\n");
-        System.out.println("Nome: ");
-        String nome = scanner.nextLine();
-        String cpf = this.validarId(em);
-        if (cpf == null)
-            return false;
-        Aluno aluno = new Aluno (nome, cpf);
-        return alunoDao.salvar(em, aluno);
-    }
-    
-    public String validarId (EntityManager em) {
-        while (true) {
-            System.out.println("CPF (\"cancelar\" para cancelar): ");
-            String id = scanner.nextLine();
-            if (id.equals("cancelar"))
-                break;
+  
+    public String validarId (EntityManager em, String id) {
             if (alunoDao.obter(em, id) == null)
                 return id;
             else
-                System.out.println("\nUM(A) ALUNO(A) COM ESTE CPF JÁ ESTÁ CADASTRADO(A)!"
-                        + " TENTE NOVAMENTE!\n");
-        }
-        return null;
+               return null;
     }
     
     public void listar(EntityManager em){

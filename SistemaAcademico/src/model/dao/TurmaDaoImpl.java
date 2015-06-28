@@ -67,7 +67,8 @@ public class TurmaDaoImpl implements Dao<Turma> {
                 alunoAluno = em.merge(alunoAluno);
             }
             for (Atividade atividadeAtividade : turma.getAtividade()) {
-                Turma oldTurmaOfAtividadeAtividade = atividadeAtividade.getTurma();
+
+        Turma oldTurmaOfAtividadeAtividade = atividadeAtividade.getTurma();
                 atividadeAtividade.setTurma(turma);
                 atividadeAtividade = em.merge(atividadeAtividade);
                 if (oldTurmaOfAtividadeAtividade != null) {

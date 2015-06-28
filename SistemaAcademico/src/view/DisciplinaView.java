@@ -15,33 +15,25 @@ public class DisciplinaView {
     private static Dao disciplinaDao = DisciplinaDaoImpl.getInstancia();
     private static Dao professorDao = ProfessorDaoImpl.getInstancia();
     
-    public Boolean cadastrar(EntityManager em) throws Exception{
-        System.out.println("CADASTRO DE DISCIPLINAS\nCadastre uma nova disciplina:\n");
-        String nome = this.validarId(em);
-        if (nome == null)
-            return false;
-        System.out.println("Ementa: ");
-        String ementa = scanner.nextLine();
-        System.out.println("Carga Horária: ");
-        Integer cargaHoraria = scanner.nextInt();
-        scanner.nextLine();
-        Disciplina disciplina = new Disciplina(nome, ementa, cargaHoraria);
-        return disciplinaDao.salvar(em, disciplina);
-    }
+//    public Boolean cadastrar(EntityManager em) throws Exception{
+//        System.out.println("CADASTRO DE DISCIPLINAS\nCadastre uma nova disciplina:\n");
+//        String nome = this.validarId(em);
+//        if (nome == null)
+//            return false;
+//        System.out.println("Ementa: ");
+//        String ementa = scanner.nextLine();
+//        System.out.println("Carga Horária: ");
+//        Integer cargaHoraria = scanner.nextInt();
+//        scanner.nextLine();
+//        Disciplina disciplina = new Disciplina(nome, ementa, cargaHoraria);
+//        return disciplinaDao.salvar(em, disciplina);
+//    }
     
-    public String validarId (EntityManager em) {
-        while (true) {
-            System.out.println("Nome (\"cancelar\" para cancelar): ");
-            String id = scanner.nextLine();
-            if (id.equals("cancelar"))
-                break;
-            if (disciplinaDao.obter(em, id) == null)
-                return id;
-            else
-                System.out.println("\nUMA DISCIPLINA COM ESTE NOME JÁ ESTÁ CADASTRADA!"
-                        + " TENTE NOVAMENTE!\n");
-        }
-        return null;
+    public String validarId (EntityManager em, String id) {
+        if (disciplinaDao.obter(em, id) == null)
+            return id;
+        else
+            return null;
     }
     
     public Boolean quantidadeTurmas(EntityManager em){

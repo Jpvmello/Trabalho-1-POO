@@ -1,11 +1,16 @@
 package view;
 
+import view.cadastros.CadastrarProfessorGUI;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import view.cadastros.CadastrarAlunoGUI;
+import view.cadastros.CadastrarAtividadeGUI;
+import view.cadastros.CadastrarAulaGUI;
+import view.cadastros.CadastrarDisciplinaGUI;
 
 public class Main {
     
@@ -38,7 +43,10 @@ public class Main {
             Boolean cadastroEfetuado = false;
             switch(opcao) {
                 case 1:{
-                    cadastroEfetuado = this.alunoView.cadastrar(em);
+                    CadastrarAlunoGUI cadastrarAluno = new CadastrarAlunoGUI(em);
+                    cadastrarAluno.setTitle("CADASTRAR ALUNO");
+                    cadastrarAluno.setVisible(true);
+                    //cadastroEfetuado = this.alunoView.cadastrar(em);
                     break;
                 }
                 case 2:{
@@ -46,19 +54,31 @@ public class Main {
                     break;
                 }
                 case 3:{
-                    cadastroEfetuado = this.professorView.cadastrar(em);
+                    CadastrarProfessorGUI cadastrarProfessor = new CadastrarProfessorGUI(em);
+                    cadastrarProfessor.setTitle("CADASTRAR PROFESSOR");
+                    cadastrarProfessor.setVisible(true);
+                    //cadastroEfetuado = this.professorView.cadastrar(em);
                     break;
                 }
                 case 4:{
-                    cadastroEfetuado = this.atividadeView.cadastrar(em);
+                    CadastrarAtividadeGUI cadastrarAtividade = new CadastrarAtividadeGUI(em);
+                    cadastrarAtividade.setTitle("CADASTRAR ATIVIDADE");
+                    cadastrarAtividade.setVisible(true);
+                    //1cadastroEfetuado = this.atividadeView.cadastrar(em);
                     break;
                 }
                 case 5:{
-                    cadastroEfetuado = this.disciplinaView.cadastrar(em);
+                    CadastrarDisciplinaGUI cadastrarDisciplina = new CadastrarDisciplinaGUI(em);
+                    cadastrarDisciplina.setTitle("CADASTRAR DISCIPLINA");
+                    cadastrarDisciplina.setVisible(true);
+                    //cadastroEfetuado = this.disciplinaView.cadastrar(em);
                     break;
                 }
                 case 6:{
-                    cadastroEfetuado = this.aulaView.cadastrar(em);
+                    CadastrarAulaGUI cadastrarAula = new CadastrarAulaGUI(em);
+                    cadastrarAula.setTitle("CADASTRAR ATIVIDADE");
+                    cadastrarAula.setVisible(true);
+                    //cadastroEfetuado = this.aulaView.cadastrar(em);
                     break;
                 }
                 case 7:{
