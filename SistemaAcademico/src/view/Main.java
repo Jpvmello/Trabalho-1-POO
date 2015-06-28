@@ -11,6 +11,10 @@ import view.cadastros.CadastrarAlunoGUI;
 import view.cadastros.CadastrarAtividadeGUI;
 import view.cadastros.CadastrarAulaGUI;
 import view.cadastros.CadastrarDisciplinaGUI;
+import view.consultas.ConsultarAlunoDisciplina;
+import view.consultas.ConsultarAlunosTurma;
+import view.consultas.ConsultarDisciplinaslecionadas;
+import view.consultas.ConsultarQuantTurma;
 import view.listagens.ListarGUI;
 
 public class Main {
@@ -45,8 +49,8 @@ public class Main {
             switch(opcao) {
                 case 1:{
                     CadastrarAlunoGUI cadastrarAluno = new CadastrarAlunoGUI(em);
-                    cadastrarAluno.setTitle("CADASTRAR ALUNO");
-                    cadastrarAluno.setVisible(true);
+//                    cadastrarAluno.setTitle("CADASTRAR ALUNO");
+//                    cadastrarAluno.setVisible(true);
                     //cadastroEfetuado = this.alunoView.cadastrar(em);
                     break;
                 }
@@ -56,29 +60,29 @@ public class Main {
                 }
                 case 3:{
                     CadastrarProfessorGUI cadastrarProfessor = new CadastrarProfessorGUI(em);
-                    cadastrarProfessor.setTitle("CADASTRAR PROFESSOR");
-                    cadastrarProfessor.setVisible(true);
+//                    cadastrarProfessor.setTitle("CADASTRAR PROFESSOR");
+//                    cadastrarProfessor.setVisible(true);
                     //cadastroEfetuado = this.professorView.cadastrar(em);
                     break;
                 }
                 case 4:{
                     CadastrarAtividadeGUI cadastrarAtividade = new CadastrarAtividadeGUI(em);
-                    cadastrarAtividade.setTitle("CADASTRAR ATIVIDADE");
-                    cadastrarAtividade.setVisible(true);
+//                    cadastrarAtividade.setTitle("CADASTRAR ATIVIDADE");
+//                    cadastrarAtividade.setVisible(true);
                     //1cadastroEfetuado = this.atividadeView.cadastrar(em);
                     break;
                 }
                 case 5:{
                     CadastrarDisciplinaGUI cadastrarDisciplina = new CadastrarDisciplinaGUI(em);
-                    cadastrarDisciplina.setTitle("CADASTRAR DISCIPLINA");
-                    cadastrarDisciplina.setVisible(true);
+//                    cadastrarDisciplina.setTitle("CADASTRAR DISCIPLINA");
+//                    cadastrarDisciplina.setVisible(true);
                     //cadastroEfetuado = this.disciplinaView.cadastrar(em);
                     break;
                 }
                 case 6:{
                     CadastrarAulaGUI cadastrarAula = new CadastrarAulaGUI(em);
-                    cadastrarAula.setTitle("CADASTRAR ATIVIDADE");
-                    cadastrarAula.setVisible(true);
+//                    cadastrarAula.setTitle("CADASTRAR ATIVIDADE");
+//                    cadastrarAula.setVisible(true);
                     //cadastroEfetuado = this.aulaView.cadastrar(em);
                     break;
                 }
@@ -212,19 +216,23 @@ public class Main {
             Boolean consultaEfetuada = false;
             switch(opcao){
                 case 1:{
-                    consultaEfetuada = this.turmaView.listarAlunos(em);
+                    ConsultarAlunosTurma consultarAlunosTurma = new ConsultarAlunosTurma(em);
+                    //consultaEfetuada = this.turmaView.listarAlunos(em);4
                     break;
                 }
                 case 2:{
-                    consultaEfetuada = this.turmaView.consultarSituacaoAluno(em);
+                    ConsultarAlunoDisciplina consultarAlunoDisciplina = new ConsultarAlunoDisciplina(em);
+                    //consultaEfetuada = this.turmaView.consultarSituacaoAluno(em);
                     break;
                 }
                 case 3:{
-                    consultaEfetuada = this.disciplinaView.quantidadeTurmas(em);
+                    ConsultarQuantTurma consultarQuantTurma = new ConsultarQuantTurma(em);
+                    //consultaEfetuada = this.disciplinaView.quantidadeTurmas(em);
                     break;
                 }
                 case 4:{
-                    consultaEfetuada = this.professorView.quantidadeDisciplina(em);
+                    ConsultarDisciplinaslecionadas consultarDisciplinaslecionadas = new ConsultarDisciplinaslecionadas(em);
+                    // consultaEfetuada = this.professorView.quantidadeDisciplina(em);
                     break;
                 }
                 default:{}

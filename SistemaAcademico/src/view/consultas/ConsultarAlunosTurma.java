@@ -12,6 +12,7 @@ import model.dao.AlunoDaoImpl;
 import model.dao.Dao;
 import model.dao.TurmaDaoImpl;
 import model.pojo.Aluno;
+import model.pojo.Atividade;
 import model.pojo.Turma;
 import view.AlunoView;
 import view.TurmaView;
@@ -39,6 +40,8 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
     public ConsultarAlunosTurma(EntityManager em){
         this();
         ConsultarAlunosTurma.em = em;
+        this.setTitle("CONSULTAR ALUNOS DE UMA TURMA");
+        this.setVisible(true);
     }
 
     /**
@@ -60,7 +63,7 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
         consultar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        areaDeConsulta = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,9 +99,9 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        areaDeConsulta.setColumns(20);
+        areaDeConsulta.setRows(5);
+        jScrollPane1.setViewportView(areaDeConsulta);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -177,31 +180,50 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         // TODO add your handling code here:
+        setVisible(false);
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarActionPerformed
         // TODO add your handling code here:
-        Boolean sucesso;
+        Boolean sucesso = false;
         String disciplinaTurma = disciplina.getText();
         Integer anoTurma = Integer.valueOf(ano.getText());
         Integer periodoTurma = Integer.valueOf(periodo.getText());
         List<Turma> listaTurma = (List<Turma>) turmaDao.obterTodos(em);
-        if (listaTurma.size() > 0)
+        if (listaTurma.size() > 0){
             for (Turma turma: listaTurma) {
-                if (turma.getDisciplina().getNome().equals(disciplinaTurma))
-                    if (turma.getAno().equals(anoTurma))
+                if (turma.getDisciplina().getNome().equals(disciplinaTurma)){
+                    if (turma.getAno().equals(anoTurma)){
                         if (turma.getPeriodo().equals(periodoTurma)) {
-                            if (turma.todasAsNotasLancadas() && turma.faltasLancadas())
-                                for (Aluno aluno: turma.getAluno())
-                                    turmaView.imprimirSituacaoAluno(aluno, turma);
-                            else
+                            if (turma.todasAsNotasLancadas() && turma.faltasLancadas()){
+                                areaDeConsulta.append(turmaView.toString());
+                                for (Aluno aluno: turma.getAluno()){
+                                    areaDeConsulta.append("Aluno: " + aluno.getNome());
+                                    areaDeConsulta.append("Notas: ");
+                                    for (Atividade atividade: turma.getAtividade()){
+                                        areaDeConsulta.append(" *" + atividade.getNome() + ": " + atividade.getNota());
+                                    }
+                                    areaDeConsulta.append(" *FINAL: " + aluno.notaFinal(turma));
+                                    areaDeConsulta.append("Faltas: " + aluno.getFalta());
+                                }
+                            }
+                            else{
                                 JOptionPane.showMessageDialog(rootPane, "AS NOTAS/FALTAS "
                                         + "CORRESPONDENTES À TURMA NÃO FORAM LANÇADAS PARA TODAS "
                                         + "AS ATIVIDADES/ALUNOS!", "AVISO", JOptionPane.WARNING_MESSAGE);
-                            sucesso = true;
+                                sucesso = true;
+                            }
                         }
+                        if(sucesso == false)
+                            JOptionPane.showMessageDialog(rootPane, "NÃO HÁ TURMAS CADASTRADAS COM OS DADOS INFORMADOS!"
+                                    , "AVISO", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
             }
-        return sucesso;
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "NÃO HÁ TURMA CADASTRADA!", "AVISO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_consultarActionPerformed
 
     /**
@@ -241,6 +263,7 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ano;
+    private javax.swing.JTextArea areaDeConsulta;
     private javax.swing.JButton cancelar;
     private javax.swing.JButton consultar;
     private javax.swing.JTextField disciplina;
@@ -249,7 +272,6 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField periodo;
     // End of variables declaration//GEN-END:variables
 }

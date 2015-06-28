@@ -35,6 +35,8 @@ public class CadastrarAulaGUI extends javax.swing.JFrame {
     public CadastrarAulaGUI(EntityManager em){
         this();
         this.em = em;
+        this.setTitle("CADASTRAR ATIVIDADE");
+        this.setVisible(true);
     }
 
     /**

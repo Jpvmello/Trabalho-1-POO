@@ -35,6 +35,8 @@ public class CadastrarDisciplinaGUI extends javax.swing.JFrame {
     public CadastrarDisciplinaGUI(EntityManager em){
         this();
         CadastrarDisciplinaGUI.em = em;
+        this.setTitle("CADASTRAR DISCIPLINA");
+        this.setVisible(true);
     }
 
     /**

@@ -36,6 +36,9 @@ public class CadastrarAlunoGUI extends javax.swing.JFrame {
     public CadastrarAlunoGUI(EntityManager em) {
         this();
         CadastrarAlunoGUI.em = em;
+        this.setTitle("CADASTRAR ALUNO");
+        this.setVisible(true);
+    
     }
 
     /**
@@ -54,8 +57,6 @@ public class CadastrarAlunoGUI extends javax.swing.JFrame {
         cpf = new javax.swing.JTextField();
         cadastrar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setText("Nome:");
 
@@ -121,7 +122,7 @@ public class CadastrarAlunoGUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrar)
                     .addComponent(cancelar))

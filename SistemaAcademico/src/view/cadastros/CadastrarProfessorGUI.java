@@ -35,6 +35,8 @@ public class CadastrarProfessorGUI extends javax.swing.JFrame {
     public CadastrarProfessorGUI(EntityManager em) {
         this();
         CadastrarProfessorGUI.em = em;
+        this.setTitle("CADASTRAR PROFESSOR");
+        this.setVisible(true);
     }
 
     /**
