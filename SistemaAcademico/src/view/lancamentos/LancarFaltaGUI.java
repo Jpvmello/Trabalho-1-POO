@@ -9,10 +9,7 @@ import javax.persistence.EntityManager;
 import model.dao.Dao;
 import model.dao.FaltaDaoImpl;
 import model.dao.TurmaDaoImpl;
-import model.pojo.Aluno;
-import model.pojo.Falta;
 import model.pojo.Turma;
-import view.FaltaView;
 
 /**
  *
@@ -24,7 +21,6 @@ public class LancarFaltaGUI extends javax.swing.JFrame {
      * Creates new form CadastarFaltaGUI
      */
     private static EntityManager em;
-    private FaltaView FaltaView = new FaltaView();
     private static Dao faltaDao = FaltaDaoImpl.getInstancia();
     private static Dao turmaDao = TurmaDaoImpl.getInstancia();
     
@@ -209,7 +205,8 @@ public class LancarFaltaGUI extends javax.swing.JFrame {
                 pesquisar.setEnabled(false);
                 id.setEnabled(true);
                 numeroDeFalta.setEnabled(true);
-                CampoAluno.setText(aluno.getNome());
+                //CampoAluno.setText(aluno.getNome());
+            }
         }
     }//GEN-LAST:event_pesquisarActionPerformed
 
