@@ -53,8 +53,6 @@ public class AtribuirAula extends javax.swing.JFrame {
         atribuir = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setText("ID da Turma:");
 
         jLabel2.setText("ID da Aula:");

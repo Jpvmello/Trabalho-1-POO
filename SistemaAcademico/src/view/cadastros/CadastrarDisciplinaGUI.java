@@ -56,8 +56,6 @@ public class CadastrarDisciplinaGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ementa = new javax.swing.JTextPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setText("Nome:");
 
         jLabel2.setText("Ementa:");

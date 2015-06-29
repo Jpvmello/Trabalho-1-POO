@@ -5,13 +5,21 @@
  */
 package view;
 
+import javax.persistence.EntityManager;
+import view.gerenciamento.AtribuirAula;
+import view.gerenciamento.AtribuirProfessor;
+import view.gerenciamento.MatricularAluno;
+
 public class MenuGerenciarGUI extends javax.swing.JFrame {
 
+    private static EntityManager em;
+    
     /**
      * Creates new form MenuGerenciarGUI
      */
-    public MenuGerenciarGUI() {
+    public MenuGerenciarGUI(EntityManager em) {
         initComponents();
+        MenuGerenciarGUI.em = em;
         setTitle("GERENCIAR");
         setVisible(true);
     }
@@ -32,8 +40,18 @@ public class MenuGerenciarGUI extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matricular aluno", "Atribuir professor à disciplina", "Atribuir aula à turma" }));
 
         jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,6 +82,29 @@ public class MenuGerenciarGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        switch (jComboBox1.getSelectedIndex()) {
+            case 0:{
+                new MatricularAluno(em);
+                break;
+            }
+            case 1:{
+                new AtribuirProfessor(em);
+                break;
+            }
+            case 2:{
+                new AtribuirAula(em);
+                break;
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -98,7 +139,7 @@ public class MenuGerenciarGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuGerenciarGUI().setVisible(true);
+                new MenuGerenciarGUI(em).setVisible(true);
             }
         });
     }

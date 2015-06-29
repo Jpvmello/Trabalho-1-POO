@@ -5,13 +5,19 @@
  */
 package view;
 
+import javax.persistence.EntityManager;
+import javax.swing.JOptionPane;
+
 public class MenuPrincipalGUI extends javax.swing.JFrame {
 
+    private static EntityManager em;
+    
     /**
      * Creates new form MenuPrincipalGUI
      */
-    public MenuPrincipalGUI() {
+    public MenuPrincipalGUI(EntityManager em) {
         initComponents();
+        MenuPrincipalGUI.em = em;
         setTitle("BEM-VINDO");
         setVisible(true);
     }
@@ -193,13 +199,13 @@ public class MenuPrincipalGUI extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel4))
                                 .addGap(72, 72, 72)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5))
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -239,32 +245,35 @@ public class MenuPrincipalGUI extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        new MenuEditarGUI();
+        new MenuEditarGUI(em);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new MenuCadastrarGUI();
+        new MenuCadastrarGUI(em);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        new MenuGerenciarGUI();
+        new MenuGerenciarGUI(em);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new MenuLancarGUI();
+        JOptionPane.showMessageDialog(rootPane, "NÃO IMPLEMENTADO POR FALTA DE TEMPO! REPARE QUE O CÓDIGO"
+                + " FOI PREPARADO PARA ISSO!", "AVISO", 
+                        JOptionPane.WARNING_MESSAGE);
+        //new MenuLancarGUI(em);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        new MenuConsultarGUI();
+        new MenuConsultarGUI(em);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        new MenuListarGUI();
+        new MenuListarGUI(em);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -302,7 +311,7 @@ public class MenuPrincipalGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuPrincipalGUI().setVisible(true);
+                new MenuPrincipalGUI(em).setVisible(true);
             }
         });
     }

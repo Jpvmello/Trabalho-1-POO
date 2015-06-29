@@ -5,13 +5,22 @@
  */
 package view;
 
+import javax.persistence.EntityManager;
+import view.consultas.ConsultarAlunoDisciplinaGUI;
+import view.consultas.ConsultarAlunosTurmaGUI;
+import view.consultas.ConsultarDisciplinasLecionadasGUI;
+import view.consultas.ConsultarQuantTurmaGUI;
+
 public class MenuConsultarGUI extends javax.swing.JFrame {
 
+    private static EntityManager em;
+    
     /**
      * Creates new form MenuConsultarGUI
      */
-    public MenuConsultarGUI() {
+    public MenuConsultarGUI(EntityManager em) {
         initComponents();
+        MenuConsultarGUI.em = em;
         setTitle("CONSULTAR");
         setVisible(true);
     }
@@ -35,8 +44,18 @@ public class MenuConsultarGUI extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Turmas de uma disciplina e a situação de seus alunos", "Situação de um aluno em uma disciplina", "Quantidade de turmas já oferecidas para uma disciplina", "Quantidade de disciplinas já lecionadas por um professor" }));
 
         jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,11 +70,11 @@ public class MenuConsultarGUI extends javax.swing.JFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1)
-                        .addGap(37, 37, 37)
+                        .addGap(52, 52, 52)
                         .addComponent(jButton2)
-                        .addGap(104, 104, 104))))
+                        .addGap(91, 91, 91))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,6 +92,33 @@ public class MenuConsultarGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        switch (jComboBox1.getSelectedIndex()) {
+            case 0:{
+                new ConsultarAlunosTurmaGUI(em);
+                break;
+            }
+            case 1:{
+                new ConsultarAlunoDisciplinaGUI(em);
+                break;
+            }
+            case 2:{
+                new ConsultarQuantTurmaGUI(em);
+                break;
+            }
+            case 3:{
+                new ConsultarDisciplinasLecionadasGUI(em);
+                break;
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,7 +157,7 @@ public class MenuConsultarGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuConsultarGUI().setVisible(true);
+                new MenuConsultarGUI(em).setVisible(true);
             }
         });
     }

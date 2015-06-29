@@ -5,17 +5,28 @@
  */
 package view;
 
+import javax.persistence.EntityManager;
+import javax.swing.JOptionPane;
+import view.cadastros.CadastrarAlunoGUI;
+import view.cadastros.CadastrarAtividadeGUI;
+import view.cadastros.CadastrarAulaGUI;
+import view.cadastros.CadastrarDisciplinaGUI;
+import view.cadastros.CadastrarProfessorGUI;
+
 /**
  *
  * @author JeanPablo
  */
 public class MenuCadastrarGUI extends javax.swing.JFrame {
 
+    private static EntityManager em;
+    
     /**
      * Creates new form MenuCadastrarGUI
      */
-    public MenuCadastrarGUI() {
+    public MenuCadastrarGUI(EntityManager em) {
         initComponents();
+        MenuCadastrarGUI.em = em;
         setTitle("CADASTRAR");
         setVisible(true);
     }
@@ -39,8 +50,18 @@ public class MenuCadastrarGUI extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aluno", "Disciplina", "Professor", "Turma", "Atividade", "Aula" }));
 
         jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,6 +98,45 @@ public class MenuCadastrarGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        switch (jComboBox1.getSelectedItem().toString()) {
+            case "Aluno":{
+                new CadastrarAlunoGUI(em);
+                break;
+            }
+            case "Atividade":{
+                new CadastrarAtividadeGUI(em);
+                break;
+            }
+            case "Aula":{
+                new CadastrarAulaGUI(em);
+                break;
+            }
+            case "Disciplina":{
+                new CadastrarDisciplinaGUI(em);
+                break;
+            }
+            case "Professor":{
+                new CadastrarProfessorGUI(em);
+                break;
+            }
+            case "Turma":{
+                JOptionPane.showMessageDialog(rootPane, "NÃO IMPLEMENTADO POR FALTA DE TEMPO! REPARE QUE O CÓDIGO"
+                + " FOI PREPARADO PARA ISSO!", "AVISO", 
+                        JOptionPane.WARNING_MESSAGE);
+                //new CadastrarTurmaGUI(em);
+                break;
+            }
+            default:{}
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -110,7 +170,7 @@ public class MenuCadastrarGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuCadastrarGUI().setVisible(true);
+                new MenuCadastrarGUI(em).setVisible(true);
             }
         });
     }

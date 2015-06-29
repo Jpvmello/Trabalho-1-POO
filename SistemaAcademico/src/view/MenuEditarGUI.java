@@ -5,13 +5,26 @@
  */
 package view;
 
+import javax.persistence.EntityManager;
+import view.edicoes.EditarAlunoGUI;
+import view.edicoes.EditarAtividadeGUI;
+import view.edicoes.EditarAulaGUI;
+import view.edicoes.EditarDisciplinaGUI;
+import view.edicoes.EditarFaltaGUI;
+import view.edicoes.EditarNotaGUI;
+import view.edicoes.EditarProfessorGUI;
+import view.edicoes.EditarTurmaGUI;
+
 public class MenuEditarGUI extends javax.swing.JFrame {
 
+    private static EntityManager em;
+    
     /**
      * Creates new form MenuEditarGUI
      */
-    public MenuEditarGUI() {
+    public MenuEditarGUI(EntityManager em) {
         initComponents();
+        MenuEditarGUI.em = em;
         setTitle("EDITAR");
         setVisible(true);
     }
@@ -35,8 +48,18 @@ public class MenuEditarGUI extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aluno", "Disciplina", "Professor", "Turma", "Atividade", "Aula", "Nota", "Faltas" }));
 
         jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,6 +94,50 @@ public class MenuEditarGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        switch (jComboBox1.getSelectedItem().toString()) {
+            case "Aluno":{
+                new EditarAlunoGUI(em);
+                break;
+            }
+            case "Atividade":{
+                new EditarAtividadeGUI(em);
+                break;
+            }
+            case "Aula":{
+                new EditarAulaGUI(em);
+                break;
+            }
+            case "Disciplina":{
+                new EditarDisciplinaGUI(em);
+                break;
+            }
+            case "Professor":{
+                new EditarProfessorGUI(em);
+                break;
+            }
+            case "Turma":{
+                new EditarTurmaGUI(em);
+                break;
+            }
+            case "Nota":{
+                new EditarNotaGUI(em);
+                break;
+            }
+            case "Faltas":{
+                new EditarFaltaGUI(em);
+                break;
+            }
+            default:{}
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -109,7 +176,7 @@ public class MenuEditarGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuEditarGUI().setVisible(true);
+                new MenuEditarGUI(em).setVisible(true);
             }
         });
     }

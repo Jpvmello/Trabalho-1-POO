@@ -59,8 +59,6 @@ public class ConsultarAlunoDisciplinaGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         areaDeConsulta = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setText("CPF do Aluno:");
 
         jLabel2.setText("Disciplina:");
