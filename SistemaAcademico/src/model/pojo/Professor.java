@@ -16,8 +16,6 @@ public class Professor implements Serializable, Comparable<Professor> {
     private String nome;
     private String departamento;
     @ManyToMany
-//    @JoinTable(name="DisciplinaProfessor", inverseJoinColumns={@JoinColumn(name="nomeDisciplina")},
-//            joinColumns={@JoinColumn(name="cpfProfessor")})
     private List<Disciplina> disciplina = new ArrayList();
     
     public Professor() {}
@@ -60,13 +58,13 @@ public class Professor implements Serializable, Comparable<Professor> {
         this.disciplina = disciplina;
     }
     
-    public Boolean adicionarDisciplina (Disciplina disciplina){
-        if (!(this.getDisciplina().contains(disciplina))) {
-            disciplina.getProfessor().add(this);
-            return this.getDisciplina().add(disciplina);
-        }
-        return false;
-    }
+//    public Boolean adicionarDisciplina (Disciplina disciplina){
+//        if (!(this.getDisciplina().contains(disciplina))) {
+//            disciplina.getProfessor().add(this);
+//            return this.getDisciplina().add(disciplina);
+//        }
+//        return false;
+//    }
     
     @Override
     public int compareTo (Professor professor){
