@@ -132,12 +132,11 @@ public class ConsultarQuantTurma extends javax.swing.JFrame {
             areaDeConsulta.setText("");
             areaDeConsulta.append(" Quantidade de turmas ja oferecidas é: " + disciplina.getTurma().size());    
         }else
-            JOptionPane.showMessageDialog(rootPane, "DISCIPLINA NÂO CADASTRADA", "AVISO", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "DISCIPLINA NÂO CADASTRADA!", "AVISO", JOptionPane.WARNING_MESSAGE);
                                    
     }//GEN-LAST:event_consultarActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-        // TODO add your handling code here:
         setVisible(false);
     }//GEN-LAST:event_cancelarActionPerformed
 

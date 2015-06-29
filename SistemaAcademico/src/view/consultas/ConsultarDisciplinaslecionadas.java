@@ -134,11 +134,9 @@ public class ConsultarDisciplinaslecionadas extends javax.swing.JFrame {
             areaDeConsulta.append(" A quantidade de disciplinas já lecionadas pelo(a) professsor(a): " + professor.getDisciplina().size());    
         }else
             JOptionPane.showMessageDialog(rootPane, "NÃO EXISTE PROFESSOR(A) CADASTRADO(A) COM ESTE CPF!", "AVISO", JOptionPane.WARNING_MESSAGE);
-  
     }//GEN-LAST:event_ConsultarActionPerformed
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
-        // TODO add your handling code here:
         setVisible(false);
     }//GEN-LAST:event_CancelarActionPerformed
 

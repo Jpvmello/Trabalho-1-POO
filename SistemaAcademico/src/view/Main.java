@@ -15,6 +15,9 @@ import view.consultas.ConsultarAlunoDisciplina;
 import view.consultas.ConsultarAlunosTurma;
 import view.consultas.ConsultarDisciplinaslecionadas;
 import view.consultas.ConsultarQuantTurma;
+import view.gerenciamento.AtribuirAula;
+import view.gerenciamento.AtribuirProfessor;
+import view.gerenciamento.MatricularAluno;
 import view.listagens.ListarGUI;
 
 public class Main {
@@ -177,15 +180,18 @@ public class Main {
             Boolean operacaoEfetuada = false;
             switch(opcao){
                 case 1:{
-                    operacaoEfetuada = this.turmaView.matricularAluno(em);
+                    MatricularAluno matricularAluno = new MatricularAluno(em);
+                    //operacaoEfetuada = this.turmaView.matricularAluno(em);
                     break;
                 }
                 case 2:{
-                    operacaoEfetuada = this.disciplinaView.atribuirProfessor(em);
+                    AtribuirProfessor atribuirProfessor = new AtribuirProfessor(em);
+                    //operacaoEfetuada = this.disciplinaView.atribuirProfessor(em);
                     break;
                 }
                 case 3:{
-                    operacaoEfetuada = this.turmaView.atribuirAula(em);
+                    AtribuirAula atribuirAula = new AtribuirAula(em);
+                    //operacaoEfetuada = this.turmaView.atribuirAula(em);
                     break;
                 }
                 default:{}
