@@ -9,19 +9,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Aluno implements Serializable,Comparable<Aluno> {
+public class Aluno implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     private String cpf;
     private String nome;
     @ManyToMany
-//    @JoinTable(name="AlunoTurma", inverseJoinColumns={@JoinColumn(name="idTurma")},
-//            joinColumns={@JoinColumn(name="cpfAluno")})
     private List<Turma> turma = new ArrayList<>();
     @OneToMany
-    //@JoinColumn(name = "cpfAluno")
     private List<Falta> falta = new ArrayList<>();
-    @OneToMany//(mappedBy="aluno")
+    @OneToMany
     private List<Nota> nota = new ArrayList<>();
 
     public Aluno() {}
@@ -93,12 +90,7 @@ public class Aluno implements Serializable,Comparable<Aluno> {
         }
         return somaNotas;
     }
-    
-    @Override
-    public int compareTo (Aluno aluno) {
-        return this.cpf.compareTo(aluno.cpf);
-    }
-    
+        
     @Override
     public String toString () {
         return ("Nome: " + this.nome + "\nCPF: " + this.cpf + "\n");

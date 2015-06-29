@@ -2,7 +2,6 @@ package model.pojo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,17 +9,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Disciplina implements Serializable,  Comparable<Disciplina> {
+public class Disciplina implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     private String nome;
     private String ementa;
     private Integer cargaHoraria;
     @ManyToMany
-//    @JoinTable(name="DisciplinaProfessor", inverseJoinColumns={@JoinColumn(name="cpfProfessor")},
-//            joinColumns={@JoinColumn(name="nomeDisciplina")})
     private List<Professor> professor = new ArrayList<>();
-    @OneToMany//(mappedBy="disciplina")
+    @OneToMany
     private List<Turma> turma = new ArrayList<>();
     
     public Disciplina() {}
@@ -73,9 +70,10 @@ public class Disciplina implements Serializable,  Comparable<Disciplina> {
 
     public Turma turmaQueContem (Aluno aluno) {
         for (Turma turma: this.getTurma()) {
-            Collections.sort(turma.getAluno());
-            if (Collections.binarySearch(turma.getAluno(), aluno) >= 0)
-                return turma;
+            for(Aluno alunoConsultado : turma.getAluno()){
+                if (aluno.equals(alunoConsultado))
+                    return turma;
+            }
         }
         return null;
     }
@@ -84,11 +82,6 @@ public class Disciplina implements Serializable,  Comparable<Disciplina> {
         if (!this.getTurma().contains(turma))
             return this.getTurma().add(turma);
         return false;
-    }
-    
-    @Override
-    public int compareTo(Disciplina disciplina) {
-        return this.nome.compareTo(disciplina.getNome());
     }
     
     @Override

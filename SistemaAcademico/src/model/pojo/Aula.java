@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Aula implements Serializable, Comparable<Aula> {
+public class Aula implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     private String id;
@@ -53,12 +53,7 @@ public class Aula implements Serializable, Comparable<Aula> {
     public void setHora(String hora) {
         this.hora = hora;
     }
-    
-    @Override
-    public int compareTo (Aula aula) {
-        return this.id.compareTo(aula.id);
-    }
-    
+        
     @Override
     public String toString () {
         return ("ID: " + this.id + "\nDia da semana: " + this.diaDaSemana +
