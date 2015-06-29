@@ -82,14 +82,14 @@ public class CadastrarProfessorGUI extends javax.swing.JFrame {
             }
         });
 
-        cadastrar.setText("CADASTRAR");
+        cadastrar.setText("Cadastrar");
         cadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cadastrarActionPerformed(evt);
             }
         });
 
-        jButton1.setText("CANCELAR");
+        jButton1.setText("Cancelar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);

@@ -17,22 +17,22 @@ import view.DisciplinaView;
  *
  * @author Filipe
  */
-public class ConsultarQuantTurma extends javax.swing.JFrame {
+public class ConsultarQuantTurmaGUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConsultarQuantTurma
+     * Creates new form ConsultarQuantTurmaGUI
      */
     private static EntityManager em;
     private DisciplinaView disciplinaView = new DisciplinaView();
     private static Dao disciplinaDao = new DisciplinaDaoImpl();
     
-    public ConsultarQuantTurma() {
+    public ConsultarQuantTurmaGUI() {
         initComponents();
     }
     
-    public ConsultarQuantTurma(EntityManager em){
+    public ConsultarQuantTurmaGUI(EntityManager em){
         this();
-        ConsultarQuantTurma.em = em;
+        ConsultarQuantTurmaGUI.em = em;
         this.setTitle("QUANTIDADES DE TURMAS OFERECIDAS");
         this.setVisible(true);
     }
@@ -158,20 +158,21 @@ public class ConsultarQuantTurma extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultarQuantTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarQuantTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultarQuantTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarQuantTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultarQuantTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarQuantTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultarQuantTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarQuantTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultarQuantTurma().setVisible(true);
+                new ConsultarQuantTurmaGUI().setVisible(true);
             }
         });
     }

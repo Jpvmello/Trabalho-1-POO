@@ -21,6 +21,7 @@ public class Turma implements Serializable, Comparable<Turma> {
     private Integer ano;
     private Integer periodo;
     private Integer numeroDeVagas;
+    private Boolean faltasLancadas;
     @ManyToOne
     @JoinColumn(name="nomeDisciplina")
     private Disciplina disciplina;
@@ -49,6 +50,7 @@ public class Turma implements Serializable, Comparable<Turma> {
         this.numeroDeVagas = numeroDeVagas;
         this.disciplina = disciplina;
         this.professor = professor;
+        this.faltasLancadas = false;
         if(aula != null)
             this.aula = aula;
         if(aluno != null)
@@ -103,6 +105,14 @@ public class Turma implements Serializable, Comparable<Turma> {
         this.professor = professor;
     }
 
+    public Boolean faltasLancadas () {
+        return faltasLancadas;
+    }
+    
+    public void setFaltasLancadas (Boolean faltasLancadas) {
+        this.faltasLancadas = faltasLancadas;
+    }
+    
     public List<Aula> getAula() {
         return aula;
     }
@@ -130,16 +140,6 @@ public class Turma implements Serializable, Comparable<Turma> {
     public Boolean adicionarAula (Aula aula) {
         if (!this.getAula().contains(aula))
             return this.getAula().add(aula);
-        return false;
-    }
-    
-    public Boolean faltasLancadas () {
-        if (this.aluno.size() > 0) {
-            Aluno ultimoMatriculado = this.aluno.get(this.aluno.size() - 1);
-            Collections.sort(ultimoMatriculado.getFalta(), new Falta());
-            return (Collections.binarySearch(ultimoMatriculado.getFalta(), new Falta(null, null, this), 
-                    new Falta()) >= 0);
-        }
         return false;
     }
     

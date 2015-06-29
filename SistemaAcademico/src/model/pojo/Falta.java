@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -12,13 +13,17 @@ public class Falta implements Serializable, Comparable<Falta>, Comparator<Falta>
     @Id
     private String id;
     private Integer falta;
+    @ManyToOne
+    //@JoinColumn(name="cpfAluno")
+    private Aluno aluno;
     @OneToOne
     //@JoinColumn(name="idTurma")
     private Turma turma;
 
-    public Falta (String id, Integer falta, Turma turma){
+    public Falta (String id, Integer falta, Aluno aluno, Turma turma){
         this.id = id;
         this.falta = falta;
+        this.aluno = aluno;
         this.turma = turma;
     }
     
@@ -40,6 +45,14 @@ public class Falta implements Serializable, Comparable<Falta>, Comparator<Falta>
         this.falta = falta;
     }
 
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }    
+    
     public Turma getTurma() {
         return turma;
     }
@@ -60,7 +73,8 @@ public class Falta implements Serializable, Comparable<Falta>, Comparator<Falta>
     
     @Override
     public String toString () {
-        return ("ID: " + this.id + "\nFaltas: " + this.falta + "\nDisciplina: " 
+        return ("ID: " + this.id + "\nFaltas: " + "\nAluno: " 
+                + this.aluno.getNome() + this.falta + "\nDisciplina: " 
                 + this.turma.getDisciplina().getNome() + "\n");
     }    
 }

@@ -21,10 +21,10 @@ import view.DisciplinaView;
  *
  * @author Filipe
  */
-public class ConsultarAlunoDisciplina extends javax.swing.JFrame {
+public class ConsultarAlunoDisciplinaGUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConsultarAlunoDisciplina
+     * Creates new form ConsultarAlunoDisciplinaGUI
      */
     
     private static EntityManager em;
@@ -33,13 +33,13 @@ public class ConsultarAlunoDisciplina extends javax.swing.JFrame {
     private static Dao alunoDao = AlunoDaoImpl.getInstancia();
     private static Dao disciplinaDao = DisciplinaDaoImpl.getInstancia();
     
-    public ConsultarAlunoDisciplina() {
+    public ConsultarAlunoDisciplinaGUI() {
         initComponents();
     }
     
-    public ConsultarAlunoDisciplina(EntityManager em){
+    public ConsultarAlunoDisciplinaGUI(EntityManager em){
         this();
-        ConsultarAlunoDisciplina.em = em;
+        ConsultarAlunoDisciplinaGUI.em = em;
         this.setTitle("CONSULTAR SITUAÇÃO DO ALUNO NA DISCIPLINA");
         this.setVisible(true);     
     }
@@ -229,20 +229,21 @@ public class ConsultarAlunoDisciplina extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplinaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplinaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplinaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunoDisciplinaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultarAlunoDisciplina().setVisible(true);
+                new ConsultarAlunoDisciplinaGUI().setVisible(true);
             }
         });
     }

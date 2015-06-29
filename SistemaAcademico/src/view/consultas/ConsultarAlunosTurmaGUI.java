@@ -21,10 +21,10 @@ import view.TurmaView;
  *
  * @author Filipe
  */
-public class ConsultarAlunosTurma extends javax.swing.JFrame {
+public class ConsultarAlunosTurmaGUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConsultarAlunosTurma
+     * Creates new form ConsultarAlunosTurmaGUI
      */
     
     private static EntityManager em;
@@ -33,13 +33,13 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
     private static Dao alunoDao = new AlunoDaoImpl();
     private static Dao turmaDao = new TurmaDaoImpl();
     
-    public ConsultarAlunosTurma() {
+    public ConsultarAlunosTurmaGUI() {
         initComponents();
     }
     
-    public ConsultarAlunosTurma(EntityManager em){
+    public ConsultarAlunosTurmaGUI(EntityManager em){
         this();
-        ConsultarAlunosTurma.em = em;
+        ConsultarAlunosTurmaGUI.em = em;
         this.setTitle("CONSULTAR ALUNOS DE UMA TURMA");
         this.setVisible(true);
     }
@@ -243,20 +243,21 @@ public class ConsultarAlunosTurma extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunosTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunosTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunosTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunosTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunosTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunosTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultarAlunosTurma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarAlunosTurmaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultarAlunosTurma().setVisible(true);
+                new ConsultarAlunosTurmaGUI().setVisible(true);
             }
         });
     }

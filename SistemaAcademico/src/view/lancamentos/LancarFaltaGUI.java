@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.cadastros;
+package view.lancamentos;
 
-import java.util.Collections;
 import javax.persistence.EntityManager;
 import model.dao.Dao;
 import model.dao.FaltaDaoImpl;
@@ -19,7 +18,7 @@ import view.FaltaView;
  *
  * @author Filipe
  */
-public class CadastrarFaltaGUI extends javax.swing.JFrame {
+public class LancarFaltaGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastarFaltaGUI
@@ -29,11 +28,11 @@ public class CadastrarFaltaGUI extends javax.swing.JFrame {
     private static Dao faltaDao = FaltaDaoImpl.getInstancia();
     private static Dao turmaDao = TurmaDaoImpl.getInstancia();
     
-    public CadastrarFaltaGUI() {
+    public LancarFaltaGUI() {
         initComponents();
     }
     
-    public CadastrarFaltaGUI(EntityManager em){
+    public LancarFaltaGUI(EntityManager em){
         this();
         this.em = em;
     }
@@ -51,12 +50,15 @@ public class CadastrarFaltaGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        cadastrar = new javax.swing.JButton();
-        turma = new javax.swing.JTextField();
+        lancar = new javax.swing.JButton();
+        CampoTurma = new javax.swing.JTextField();
         id = new javax.swing.JTextField();
         numeroDeFalta = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         cancelar = new javax.swing.JButton();
+        CampoAluno = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        pesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,68 +66,100 @@ public class CadastrarFaltaGUI extends javax.swing.JFrame {
 
         jLabel2.setText("Turma:");
 
-        cadastrar.setText("Cadastrar");
-        cadastrar.addActionListener(new java.awt.event.ActionListener() {
+        lancar.setText("Lançar");
+        lancar.setEnabled(false);
+        lancar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastrarActionPerformed(evt);
+                lancarActionPerformed(evt);
             }
         });
 
+        id.setEditable(false);
         id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Numero de Faltas:");
+        numeroDeFalta.setEditable(false);
+        numeroDeFalta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numeroDeFaltaActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Número de faltas:");
 
         cancelar.setText("Cancelar");
+
+        CampoAluno.setEditable(false);
+        CampoAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CampoAlunoActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Aluno:");
+
+        pesquisar.setText("Pesquisar");
+        pesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                        .addComponent(lancar)
+                        .addGap(81, 81, 81)
+                        .addComponent(cancelar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(turma)
-                            .addComponent(numeroDeFalta, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(cadastrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cancelar)
-                        .addGap(29, 29, 29)))
-                .addGap(23, 23, 23))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(numeroDeFalta, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(id, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CampoTurma)
+                            .addComponent(CampoAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addComponent(pesquisar)
+                .addGap(0, 20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(turma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(38, 38, 38)
+                    .addComponent(CampoTurma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(pesquisar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CampoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(38, 38, 38)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(numeroDeFalta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cadastrar)
+                    .addComponent(lancar)
                     .addComponent(cancelar))
                 .addContainerGap())
         );
@@ -136,59 +170,48 @@ public class CadastrarFaltaGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addGap(0, 163, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
+    private void lancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lancarActionPerformed
         // TODO add your handling code here:
-        
-//        String idFalta = id.getText();
-//        Turma turma = (Turma) turmaDao.obter(em, idFalta);
-//        if (!turma.faltasLancadas()) {
-//            for (Aluno aluno: turma.getAluno()) {
-//                Collections.sort(aluno.getFalta(), new Falta());
-//                if (Collections.binarySearch(aluno.getFalta(), new Falta (null, null, turma),
-//                        new Falta()) <= -1) {
-//                    System.out.println("\nAtualize o registro de faltas do aluno abaixo:\n");
-//                    System.out.println(aluno.toString() + "\n");
-//                    String id = this.validarId(em);
-//                    if (id == null) {
-//                        System.out.println("\nO registro de faltas ainda não foi concluído para todos os"
-//                                + " alunos da turma. Você pode retomar a operação a qualquer momento.");
-//                        return true;
-//                    }
-//                    System.out.println("Número de faltas: ");
-//                    Integer numeroDeFalta = scanner.nextInt();
-//                    scanner.nextLine();
-//                    Falta falta = new Falta (id, numeroDeFalta, turma);
-//                    aluno.getFalta().add(falta);
-//                    faltaDao.salvar(em, falta);
-//                }
-//            }
-//            return true;
-//        }
-//        else {
-//            System.out.println("\nAS FALTAS CORRESPONDENTES AOS ALUNOS DESTA TURMA JÁ FORAM LANÇADAS!");
-//            return false;
-//        }
-//    
-//        
-    }//GEN-LAST:event_cadastrarActionPerformed
+          
+    }//GEN-LAST:event_lancarActionPerformed
 
     private void idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_idActionPerformed
+
+    private void numeroDeFaltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeroDeFaltaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numeroDeFaltaActionPerformed
+
+    private void CampoAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoAlunoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CampoAlunoActionPerformed
+
+    private void pesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarActionPerformed
+        // TODO add your handling code here:
+        Turma turma = (Turma) turmaDao.obter(em, CampoTurma.getText());
+        if (turma != null) {
+            if (!turma.faltasLancadas()) {
+                CampoTurma.setEditable(false);
+                pesquisar.setEnabled(false);
+                id.setEnabled(true);
+                numeroDeFalta.setEnabled(true);
+                CampoAluno.setText(aluno.getNome());
+        }
+    }//GEN-LAST:event_pesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,34 +230,39 @@ public class CadastrarFaltaGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LancarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LancarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LancarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LancarFaltaGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastrarFaltaGUI().setVisible(true);
+                new LancarFaltaGUI().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cadastrar;
+    private javax.swing.JTextField CampoAluno;
+    private javax.swing.JTextField CampoTurma;
     private javax.swing.JButton cancelar;
     private javax.swing.JTextField id;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton lancar;
     private javax.swing.JTextField numeroDeFalta;
-    private javax.swing.JTextField turma;
+    private javax.swing.JButton pesquisar;
     // End of variables declaration//GEN-END:variables
 }

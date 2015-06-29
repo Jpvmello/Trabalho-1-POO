@@ -16,7 +16,7 @@ import view.ProfessorView;
  *
  * @author Filipe
  */
-public class ConsultarDisciplinaslecionadas extends javax.swing.JFrame {
+public class ConsultarDisciplinasLecionadasGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form ConsultarDisciplinalecionadas
@@ -25,13 +25,13 @@ public class ConsultarDisciplinaslecionadas extends javax.swing.JFrame {
     private ProfessorView professorView = new ProfessorView();
     private static Dao professorDao = new ProfessorDaoImpl();
         
-    public ConsultarDisciplinaslecionadas(){
+    public ConsultarDisciplinasLecionadasGUI(){
         initComponents();
     }
     
-    public ConsultarDisciplinaslecionadas(EntityManager em){
+    public ConsultarDisciplinasLecionadasGUI(EntityManager em){
         this();
-        ConsultarDisciplinaslecionadas.em = em;
+        ConsultarDisciplinasLecionadasGUI.em = em;
         this.setTitle("CONSULTAR DISCIPLINAS LECIONADAS");
         this.setVisible(true);
     }
@@ -159,21 +159,23 @@ public class ConsultarDisciplinaslecionadas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultarDisciplinaslecionadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarDisciplinasLecionadasGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultarDisciplinaslecionadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarDisciplinasLecionadasGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultarDisciplinaslecionadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarDisciplinasLecionadasGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultarDisciplinaslecionadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultarDisciplinasLecionadasGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultarDisciplinaslecionadas().setVisible(true);
+                new ConsultarDisciplinasLecionadasGUI().setVisible(true);
             }
         });
     }
