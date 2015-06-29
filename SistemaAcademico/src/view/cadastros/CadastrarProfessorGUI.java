@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import model.dao.Dao;
 import model.dao.ProfessorDaoImpl;
 import model.pojo.Professor;
-import view.ProfessorView;
 
 /**
  *
@@ -25,7 +24,6 @@ public class CadastrarProfessorGUI extends javax.swing.JFrame {
      */
     
     private static EntityManager em;
-    private ProfessorView professorView = new ProfessorView();
     private static Dao professorDao = ProfessorDaoImpl.getInstancia();
     
     public CadastrarProfessorGUI(){
@@ -172,9 +170,8 @@ public class CadastrarProfessorGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nomeProfessor = nome.getText();
         String cpfProfessor = cpf.getText();
-        cpfProfessor = professorView.validarId(em, cpfProfessor);
         String departamentoProfessor = departamento.getText();
-        if (cpfProfessor == null){
+        if (professorDao.obter(em,cpfProfessor) != null){
             JOptionPane.showMessageDialog(rootPane, "PROFESSOR COM ESTE CPF JÁ ESTÁ CADASTRADO", "AVISO", JOptionPane.WARNING_MESSAGE);
         }
         else{

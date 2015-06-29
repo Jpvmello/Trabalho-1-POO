@@ -14,8 +14,6 @@ import model.pojo.Aluno;
 import model.pojo.Disciplina;
 import model.pojo.Falta;
 import model.pojo.Turma;
-import view.AlunoView;
-import view.DisciplinaView;
 
 /**
  *
@@ -28,8 +26,6 @@ public class ConsultarAlunoDisciplinaGUI extends javax.swing.JFrame {
      */
     
     private static EntityManager em;
-    private AlunoView alunoView = new AlunoView();
-    private DisciplinaView disciplinaView = new DisciplinaView();
     private static Dao alunoDao = AlunoDaoImpl.getInstancia();
     private static Dao disciplinaDao = DisciplinaDaoImpl.getInstancia();
     

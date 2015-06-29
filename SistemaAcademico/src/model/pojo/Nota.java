@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 
 
 @Entity
-public class Nota implements Serializable, Comparable<Nota>, Comparator<Nota> {
+public class Nota implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     private String id;
@@ -33,10 +33,6 @@ public class Nota implements Serializable, Comparable<Nota>, Comparator<Nota> {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Double getNota() {
         return nota;
     }
@@ -59,16 +55,6 @@ public class Nota implements Serializable, Comparable<Nota>, Comparator<Nota> {
 
     public void setAtividade(Atividade atividade) {
         this.atividade = atividade;
-    }
-     
-    @Override
-    public int compareTo (Nota nota){
-        return this.id.compareTo(nota.id);
-    }
-    
-    @Override
-    public int compare (Nota nota1, Nota nota2) {
-        return nota1.aluno.compareTo(nota2.aluno);
     }
     
     @Override

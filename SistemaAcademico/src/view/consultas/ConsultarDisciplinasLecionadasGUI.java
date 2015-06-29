@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import model.dao.Dao;
 import model.dao.ProfessorDaoImpl;
 import model.pojo.Professor;
-import view.ProfessorView;
 
 /**
  *
@@ -22,7 +21,6 @@ public class ConsultarDisciplinasLecionadasGUI extends javax.swing.JFrame {
      * Creates new form ConsultarDisciplinalecionadas
      */
     private static EntityManager em;
-    private ProfessorView professorView = new ProfessorView();
     private static Dao professorDao = new ProfessorDaoImpl();
         
     public ConsultarDisciplinasLecionadasGUI(){

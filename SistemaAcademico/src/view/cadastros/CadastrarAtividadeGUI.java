@@ -14,7 +14,6 @@ import model.dao.Dao;
 import model.dao.TurmaDaoImpl;
 import model.pojo.Atividade;
 import model.pojo.Turma;
-import view.AtividadeView;
 
 /**
  *
@@ -27,7 +26,6 @@ public class CadastrarAtividadeGUI extends javax.swing.JFrame {
      */
     
     private static EntityManager em;
-    private AtividadeView atividadeView = new AtividadeView();
     private static Dao atividadeDao = AtividadeDaoImpl.getInstancia();
     private Dao turmaDao = TurmaDaoImpl.getInstancia();
     
@@ -241,7 +239,7 @@ public class CadastrarAtividadeGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "A TURMA INFORMADA NÃO EXISTE", "AVISO", JOptionPane.WARNING_MESSAGE);
         else{
             //String id2 = atividadeView.validarId(em, idAtividade);
-            if(atividadeView.validarId(em, idAtividade) == null){
+            if(atividadeDao.obter(em, idAtividade) != null){
                 JOptionPane.showMessageDialog(rootPane, "ATIVIDADE COM ESSE ID JÁ ESTÁ CADASTRADA", "AVISO", JOptionPane.WARNING_MESSAGE);         
             }
             else{

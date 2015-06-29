@@ -58,13 +58,13 @@ public class Professor implements Serializable, Comparable<Professor> {
         this.disciplina = disciplina;
     }
     
-//    public Boolean adicionarDisciplina (Disciplina disciplina){
-//        if (!(this.getDisciplina().contains(disciplina))) {
-//            disciplina.getProfessor().add(this);
-//            return this.getDisciplina().add(disciplina);
-//        }
-//        return false;
-//    }
+    public Boolean adicionarDisciplina (Disciplina disciplina){
+        if (!(this.getDisciplina().contains(disciplina))) {
+            disciplina.getProfessor().add(this);
+            return this.getDisciplina().add(disciplina);
+        }
+        return false;
+    }
     
     @Override
     public int compareTo (Professor professor){

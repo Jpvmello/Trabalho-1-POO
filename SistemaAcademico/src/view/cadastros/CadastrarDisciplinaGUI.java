@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import model.dao.Dao;
 import model.dao.DisciplinaDaoImpl;
 import model.pojo.Disciplina;
-import view.DisciplinaView;
 
 /**
  *
@@ -25,7 +24,6 @@ public class CadastrarDisciplinaGUI extends javax.swing.JFrame {
      */
     
     private static EntityManager em;
-    private DisciplinaView disciplinaView = new DisciplinaView();
     private static Dao disciplinaDao = DisciplinaDaoImpl.getInstancia();
     
     public CadastrarDisciplinaGUI() {
@@ -156,7 +154,7 @@ public class CadastrarDisciplinaGUI extends javax.swing.JFrame {
         String ementaDisciplina = ementa.getText();
         Integer cargaHorariaDisciplina = Integer.valueOf(cargaHoraria.getText());
         //String nome = this.validarId(em, nomeDisciplina);
-        if (disciplinaView.validarId(em, nomeDisciplina) == null)
+        if (disciplinaDao.obter(em, nomeDisciplina) != null)
             JOptionPane.showMessageDialog(rootPane, "DISCIPLINA COM ESSE NOME JÁ ESTÁ CADASTRADA", "AVISO", JOptionPane.WARNING_MESSAGE);
         else{
             Disciplina disciplina = new Disciplina(nomeDisciplina, ementaDisciplina, cargaHorariaDisciplina);

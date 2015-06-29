@@ -14,8 +14,6 @@ import model.dao.TurmaDaoImpl;
 import model.pojo.Aluno;
 import model.pojo.Atividade;
 import model.pojo.Turma;
-import view.AlunoView;
-import view.TurmaView;
 
 /**
  *
@@ -28,8 +26,6 @@ public class ConsultarAlunosTurmaGUI extends javax.swing.JFrame {
      */
     
     private static EntityManager em;
-    private AlunoView alunoView = new AlunoView();
-    private TurmaView turmaView = new TurmaView();
     private static Dao alunoDao = new AlunoDaoImpl();
     private static Dao turmaDao = new TurmaDaoImpl();
     
@@ -196,7 +192,7 @@ public class ConsultarAlunosTurmaGUI extends javax.swing.JFrame {
                     if (turma.getAno().equals(anoTurma)){
                         if (turma.getPeriodo().equals(periodoTurma)) {
                             if (turma.todasAsNotasLancadas() && turma.faltasLancadas()){
-                                areaDeConsulta.append(turmaView.toString());
+                                areaDeConsulta.append(turma.toString());
                                 for (Aluno aluno: turma.getAluno()){
                                     areaDeConsulta.append("Aluno: " + aluno.getNome());
                                     areaDeConsulta.append("Notas: ");

@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import model.dao.AlunoDaoImpl;
 import model.dao.Dao;
 import model.pojo.Aluno;
-import view.AlunoView;
 
 /**
  *
@@ -26,7 +25,6 @@ public class CadastrarAlunoGUI extends javax.swing.JFrame {
      */
     
     private static EntityManager em;
-    private AlunoView alunoView = new AlunoView();
     private static Dao alunoDao = AlunoDaoImpl.getInstancia();
     
     public CadastrarAlunoGUI(){
@@ -155,8 +153,7 @@ public class CadastrarAlunoGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nomeAluno = nome.getText();
         String cpfAluno = cpf.getText();
-        cpfAluno = alunoView.validarId(em, cpfAluno);
-        if (cpfAluno == null){
+        if (alunoDao.obter(em, cpfAluno) != null){
             JOptionPane.showMessageDialog(rootPane, "ALUNO COM ESTE CPF JÁ ESTÁ CADASTRADO", "AVISO", JOptionPane.WARNING_MESSAGE);
         }
         else{

@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import model.dao.Dao;
 import model.dao.DisciplinaDaoImpl;
 import model.pojo.Disciplina;
-import view.DisciplinaView;
 
 
 /**
@@ -23,7 +22,6 @@ public class ConsultarQuantTurmaGUI extends javax.swing.JFrame {
      * Creates new form ConsultarQuantTurmaGUI
      */
     private static EntityManager em;
-    private DisciplinaView disciplinaView = new DisciplinaView();
     private static Dao disciplinaDao = new DisciplinaDaoImpl();
     
     public ConsultarQuantTurmaGUI() {

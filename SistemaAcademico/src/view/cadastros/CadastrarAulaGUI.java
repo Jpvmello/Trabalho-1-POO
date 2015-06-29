@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import model.dao.AulaDaoImpl;
 import model.dao.Dao;
 import model.pojo.Aula;
-import view.AulaView;
 
 /**
  *
@@ -25,7 +24,6 @@ public class CadastrarAulaGUI extends javax.swing.JFrame {
      */
     
     private static EntityManager em;
-    private AulaView aulaView = new AulaView();
     private static Dao aulaDao = AulaDaoImpl.getInstancia();
     
     public CadastrarAulaGUI() {
@@ -177,7 +175,7 @@ public class CadastrarAulaGUI extends javax.swing.JFrame {
         String diaDaSemanaAula = diaDaSemana.getText();
         String horaAula = hora.getText();
         String localAula = local.getText();
-        if (aulaView.validarId(em, idAula) == null)
+        if (aulaDao.obter(em, idAula) != null)
             JOptionPane.showMessageDialog(rootPane, "AULA COM ESSE ID JÁ ESTÁ CADASTRADA", "AVISO", JOptionPane.WARNING_MESSAGE);
         else{
             Aula aula = new Aula (idAula, diaDaSemanaAula, horaAula, localAula);
